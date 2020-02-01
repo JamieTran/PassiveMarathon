@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import '../home_page.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -106,9 +107,16 @@ class _AuthCardState extends State<AuthCard> {
       _isLoading = true;
     });
     if (_authMode == AuthMode.Login) {
-      // Log user in
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+        );
     } else {
       // Sign user up
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+        );
     }
     setState(() {
       _isLoading = false;

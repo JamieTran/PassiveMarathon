@@ -3,7 +3,7 @@ import './page.dart';
 import './dots.dart';
 import './description_box.dart';
 import 'package:preload_page_view/preload_page_view.dart';
-import './auth_screen.dart';
+import '../login_pages/auth_screen.dart';
 
 class LandingPages extends StatefulWidget {
   @override
