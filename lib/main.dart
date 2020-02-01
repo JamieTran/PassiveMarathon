@@ -3,6 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 import 'package:flutter/material.dart';
 import './landing_pages/landing_pages.dart';
+import 'home_page.dart';
+import 'constants.dart' as Constants;
 
 void main() {
   runApp(new MyApp());
