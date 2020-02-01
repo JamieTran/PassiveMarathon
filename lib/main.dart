@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 import 'package:flutter/material.dart';
-import './landing_pages.dart';
+import './landing_pages/landing_pages.dart';
 
 void main() {
   runApp(new MyApp());
