@@ -2,14 +2,13 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 import 'package:flutter/material.dart';
-import './homePage.dart';
+import './landing_pages.dart';
 
 void main() {
   runApp(new MyApp());
 }
 
-
-class MyApp extends StatelessWidget {  
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     precacheImage(new AssetImage("assets/images/background1.jpg"), context);
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
 
     return new MaterialApp(
       title: 'Flutter Demo',
-      home: new MyHomePage(),
+      home: new LandingPages(),
       debugShowCheckedModeBanner: false,
     );
   }

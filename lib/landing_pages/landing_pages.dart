@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import './page.dart';
 import './dots.dart';
-import './descriptionBox.dart';
+import './description_box.dart';
 import 'package:preload_page_view/preload_page_view.dart';
+import './auth_screen.dart';
 
-
-class MyHomePage extends StatefulWidget {
+class LandingPages extends StatefulWidget {
   @override
-  State createState() => new MyHomePageState();
+  State createState() => new LandingPagesState();
 }
 
-class MyHomePageState extends State<MyHomePage> {
-
+class LandingPagesState extends State<LandingPages> {
   Widget _buildPageItem(BuildContext context, int index) {
     return new Page(page: _pages[index], idx: index);
   }
-  
+
   final _controller = new PreloadPageController();
   static const _kDuration = const Duration(milliseconds: 300);
   static const _kCurve = Curves.ease;
@@ -63,11 +62,14 @@ class MyHomePageState extends State<MyHomePage> {
                 minWidth: 135,
                 child: RaisedButton(
                   color: Colors.grey[800].withOpacity(0.5),
-                  onPressed: () {},
-                  child: const Text(
-                    'Log In',
-                    style: TextStyle(fontSize: 20, color: Colors.white)
-                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AuthScreen()),
+                    );
+                  },
+                  child: const Text('Log In',
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
               ),
             ),
@@ -80,10 +82,8 @@ class MyHomePageState extends State<MyHomePage> {
                 child: RaisedButton(
                   color: Colors.grey[800].withOpacity(0.5),
                   onPressed: () {},
-                  child: const Text(
-                    'Sign Up',
-                    style: TextStyle(fontSize: 20, color: Colors.white)
-                  ),
+                  child: const Text('Sign Up',
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
               ),
             ),
