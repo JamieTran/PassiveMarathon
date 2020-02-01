@@ -11,6 +11,7 @@ class MarathonGroups extends StatelessWidget {
         title: Text("Marathon Groups"),
         backgroundColor: Constants.bright_red,
       ),
+      backgroundColor: Constants.bright_white,
       body: Center(
         child: RaisedButton(
           onPressed: () {

@@ -11,6 +11,7 @@ class FriendsManagement extends StatelessWidget {
         title: Text("Friends"),
         backgroundColor: Constants.bright_blue,
       ),
+      backgroundColor: Constants.bright_white,
       body: Center(
         child: RaisedButton(
           onPressed: () {
