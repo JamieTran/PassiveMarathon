@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:passive_marathon/profile_page.dart';
 import 'package:passive_marathon/settings_page.dart';
-import 'marathon_groups.dart';
-import 'friend_management.dart';
-import 'nav_button.dart';
-import 'constants.dart' as Constants;
+import '../group_pages/marathon_groups.dart';
+import '../friend_pages/friend_management.dart';
+import '../nav_button.dart';
+import '../constants.dart' as Constants;
 
 // Stateful widgets are used when you need to update the screen
 // with data constantly, this works for passive marathon

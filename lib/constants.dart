@@ -25,4 +25,12 @@ const Color bright_blue= Color(0xff3cbee3);
 const Color bright_yellow = Color(0xfffdb321);
 const Color bright_purple = Color(0xffa862ac);
 
+const String create_group = 'Create Group';
+const String add_group = 'Add Group';
+const String delete_group = 'Delete Group';
 
+  const List<String> choices = <String>[
+    create_group,
+    add_group,
+    delete_group,
+  ];
