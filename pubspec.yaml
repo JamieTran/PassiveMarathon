@@ -17,6 +17,9 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+
+  cloud_firestore:
+
   preload_page_view: ^0.1.4
   flutter:
     sdk: flutter
