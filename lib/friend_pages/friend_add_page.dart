@@ -1,14 +1,17 @@
+// Copyright 2017, the Flutter project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
 import 'package:flutter/material.dart';
-import 'constants.dart' as Constants;
+import '../landing_pages/landing_pages.dart';
+import '../home_pages/home_page.dart';
+import '../constants.dart' as Constants;
 
-// Stateful widgets are used when you need to update the screen
-// with data constantly, this works for passive marathon
-class FriendsManagement extends StatelessWidget {
+class FriendAdd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Friends"),
+        title: Text("Add Friend"),
         backgroundColor: Constants.bright_blue,
       ),
       backgroundColor: Constants.bright_white,

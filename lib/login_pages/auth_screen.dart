@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import '../home_page.dart';
+import '../home_pages/home_page.dart';
 
 enum AuthMode { Signup, Login }
 

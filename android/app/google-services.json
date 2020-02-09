@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "541879578678",
+    "firebase_url": "https://passivemarathon-2020.firebaseio.com",
+    "project_id": "passivemarathon-2020",
+    "storage_bucket": "passivemarathon-2020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:541879578678:android:624b2904cd400f0391a897",
+        "android_client_info": {
+          "package_name": "com.example.passive_marathon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "541879578678-p550rqt3ht3ivkflk5t4c471pq035rok.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.passive_marathon",
+            "certificate_hash": "bf5606136527cfbec3c1dd4aad42cb8528692b10"
+          }
+        },
+        {
+          "client_id": "541879578678-i2318v9b1m4jm14vpq8jhpkl2ulhrar7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4In7rzJ2zkWU3JqtdvzyyBQGDB1MtdGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "541879578678-i2318v9b1m4jm14vpq8jhpkl2ulhrar7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
