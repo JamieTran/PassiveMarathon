@@ -3,7 +3,7 @@ import './page.dart';
 import './dots.dart';
 import './description_box.dart';
 import 'package:preload_page_view/preload_page_view.dart';
-import '../login_pages/auth_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LandingPages extends StatefulWidget {
   @override
@@ -31,6 +31,15 @@ class LandingPagesState extends State<LandingPages> {
     "By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed",
     "By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed",
   ];
+
+  _launchURL() async {
+    const url = 'https://marathon-18119.firebaseapp.com/';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   final List<Widget> _pages = <Widget>[
     new DescriptionBox(landingHeaders[0], landingBody[0]),
@@ -62,12 +71,7 @@ class LandingPagesState extends State<LandingPages> {
                 minWidth: 135,
                 child: RaisedButton(
                   color: Colors.grey[800].withOpacity(0.5),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AuthScreen()),
-                    );
-                  },
+                  onPressed: _launchURL,
                   child: const Text('Log In',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
@@ -81,7 +85,7 @@ class LandingPagesState extends State<LandingPages> {
                 minWidth: 135,
                 child: RaisedButton(
                   color: Colors.grey[800].withOpacity(0.5),
-                  onPressed: () {},
+                  onPressed: _launchURL,
                   child: const Text('Sign Up',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
