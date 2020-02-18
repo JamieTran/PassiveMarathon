@@ -9,6 +9,8 @@ import 'package:preload_page_view/preload_page_view.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import '../constants.dart' as Constants;
+import 'package:url_launcher/url_launcher.dart';
+import '../home_pages/home_page.dart';
 
 class LandingPages extends StatefulWidget {
   @override
@@ -25,6 +27,7 @@ class LandingPagesState extends State<LandingPages> {
   static const _kCurve = Curves.ease;
   final _kArrowColor = Colors.black.withOpacity(0.8);
 
+  // TODO: Move these into constants
   static var landingHeaders = [
     "Marathon",
     "Something About Friends",
@@ -61,6 +64,7 @@ class LandingPagesState extends State<LandingPages> {
     new DescriptionBox(landingHeaders[2], landingBody[2]),
   ];
 
+  // TODO: Change onPressed back to _launchURL
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
