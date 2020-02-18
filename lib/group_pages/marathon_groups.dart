@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:passive_marathon/db_management.dart';
 import '../constants.dart' as Constants;
+import './create_group.dart';
 
 // Stateful widgets are used when you need to update the screen
 // with data constantly, this works for passive marathon
@@ -13,7 +14,7 @@ class MarathonGroups extends StatelessWidget {
         backgroundColor: Constants.bright_red,
         actions: <Widget>[
           PopupMenuButton<String>(
-              onSelected: choiceAction,
+              onSelected: (choice) => onItemMenuPress(choice, context),
               itemBuilder: (BuildContext context) {
               return Constants.choices.map((String choice) {
                 return PopupMenuItem<String>(
@@ -37,9 +38,13 @@ class MarathonGroups extends StatelessWidget {
     );
   }
   
-  void choiceAction(String choice) {
+  void onItemMenuPress(String choice, BuildContext context) {
     if (choice == Constants.create_group) {
-      print('Create Group page here');
+      showDialog(
+        context: context,
+        builder: (context) {
+          return CreateGroup();
+        });
     } else if (choice == Constants.add_group) {
       print('Add group page here');
     } else if (choice == Constants.leave_group) {
