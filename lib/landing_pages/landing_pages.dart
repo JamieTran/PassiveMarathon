@@ -3,7 +3,11 @@ import './page.dart';
 import './dots.dart';
 import './description_box.dart';
 import 'package:preload_page_view/preload_page_view.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import '../constants.dart' as Constants;
+
+
 
 class LandingPages extends StatefulWidget {
   @override
@@ -33,12 +37,22 @@ class LandingPagesState extends State<LandingPages> {
   ];
 
   _launchURL() async {
-    const url = 'https://marathon-18119.firebaseapp.com/';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+     final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: 'https://passivemarathon.page.link/callback',
+      link: Uri.parse('https://passivemarathon.com/welcome'),
+      androidParameters: AndroidParameters(
+          packageName: 'com.example.passive_marathon',
+          minimumVersion: 0,
+      ),
+    );
+
+    final Uri dynamicUrl = await parameters.buildUrl();
+    print(dynamicUrl);
+
+    final result = await FlutterWebAuth.authenticate(url: Constants.login_url, callbackUrlScheme: "com.example.passive_marathon");
+    print(result);
+    final token = Uri.parse(result).queryParameters['token'];
+    print(token);
   }
 
   final List<Widget> _pages = <Widget>[
