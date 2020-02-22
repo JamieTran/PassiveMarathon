@@ -3,7 +3,11 @@ import './page.dart';
 import './dots.dart';
 import './description_box.dart';
 import 'package:preload_page_view/preload_page_view.dart';
-import '../login_pages/auth_screen.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import '../constants.dart' as Constants;
+
+
 
 class LandingPages extends StatefulWidget {
   @override
@@ -31,6 +35,25 @@ class LandingPagesState extends State<LandingPages> {
     "By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed",
     "By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed",
   ];
+
+  _launchURL() async {
+     final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: 'https://passivemarathon.page.link/callback',
+      link: Uri.parse('https://passivemarathon.com/welcome'),
+      androidParameters: AndroidParameters(
+          packageName: 'com.example.passive_marathon',
+          minimumVersion: 0,
+      ),
+    );
+
+    final Uri dynamicUrl = await parameters.buildUrl();
+    print(dynamicUrl);
+
+    final result = await FlutterWebAuth.authenticate(url: Constants.login_url, callbackUrlScheme: "com.example.passive_marathon");
+    print(result);
+    final token = Uri.parse(result).queryParameters['token'];
+    print(token);
+  }
 
   final List<Widget> _pages = <Widget>[
     new DescriptionBox(landingHeaders[0], landingBody[0]),
@@ -62,12 +85,7 @@ class LandingPagesState extends State<LandingPages> {
                 minWidth: 135,
                 child: RaisedButton(
                   color: Colors.grey[800].withOpacity(0.5),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AuthScreen()),
-                    );
-                  },
+                  onPressed: _launchURL,
                   child: const Text('Log In',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
@@ -81,7 +99,7 @@ class LandingPagesState extends State<LandingPages> {
                 minWidth: 135,
                 child: RaisedButton(
                   color: Colors.grey[800].withOpacity(0.5),
-                  onPressed: () {},
+                  onPressed: _launchURL,
                   child: const Text('Sign Up',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
