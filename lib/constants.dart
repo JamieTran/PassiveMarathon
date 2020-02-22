@@ -1,6 +1,7 @@
 library Constants;
 import 'package:flutter/material.dart';
 
+
 const Color pastel_green = Color(0xFF469DA0);
 const Color pastel_yellow = Color(0xFFEBE280);
 const Color pastel_red = Color(0xFFBE5968);
@@ -29,8 +30,11 @@ const String create_group = 'Create Group';
 const String add_group = 'Add Group';
 const String leave_group = 'Leave Group';
 
-  const List<String> choices = <String>[
-    create_group,
-    add_group,
-    leave_group,
-  ];
+//TODO: will have to change this to marathon login page
+const String login_url = "http://10.0.2.2:3000/sessions/login";
+
+const List<String> choices = <String>[
+  create_group,
+  add_group,
+  leave_group,
+];
