@@ -28,7 +28,7 @@ const Color bright_purple = Color(0xffa862ac);
 
 const String create_group = 'Create Group';
 const String add_group = 'Add Group';
-const String delete_group = 'Delete Group';
+const String leave_group = 'Leave Group';
 
 //TODO: will have to change this to marathon login page
 const String login_url = "http://10.0.2.2:3000/sessions/login";
@@ -36,5 +36,5 @@ const String login_url = "http://10.0.2.2:3000/sessions/login";
 const List<String> choices = <String>[
   create_group,
   add_group,
-  delete_group,
+  leave_group,
 ];
