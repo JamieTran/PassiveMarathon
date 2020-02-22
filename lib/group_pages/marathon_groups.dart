@@ -42,8 +42,8 @@ class MarathonGroups extends StatelessWidget {
       print('Create Group page here');
     } else if (choice == Constants.add_group) {
       print('Add group page here');
-    } else if (choice == Constants.delete_group) {
-      print('Delete Group page here');
+    } else if (choice == Constants.leave_group) {
+      print('Leave Group page here');
     }
   }
 

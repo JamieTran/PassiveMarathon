@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:passive_marathon/db_management.dart';
 import '../constants.dart' as Constants;
 
 // Stateful widgets are used when you need to update the screen
@@ -15,7 +16,8 @@ class FriendsManagement extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
-                
+                DatabaseManagement().createUser("test");
+                print("Sent Data");
               },
             ),
         ]),
