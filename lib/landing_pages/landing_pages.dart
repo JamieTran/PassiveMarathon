@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import './page.dart';
 import './dots.dart';
@@ -6,8 +8,6 @@ import 'package:preload_page_view/preload_page_view.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import '../constants.dart' as Constants;
-
-
 
 class LandingPages extends StatefulWidget {
   @override
@@ -36,23 +36,50 @@ class LandingPagesState extends State<LandingPages> {
     "By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed",
   ];
 
-  _launchURL() async {
-     final DynamicLinkParameters parameters = DynamicLinkParameters(
+  void _launchURL() async {
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
       uriPrefix: 'https://passivemarathon.page.link/callback',
       link: Uri.parse('https://passivemarathon.com/welcome'),
       androidParameters: AndroidParameters(
-          packageName: 'com.example.passive_marathon',
-          minimumVersion: 0,
+        packageName: 'com.example.passive_marathon',
+        minimumVersion: 0,
       ),
     );
 
     final Uri dynamicUrl = await parameters.buildUrl();
     print(dynamicUrl);
 
-    final result = await FlutterWebAuth.authenticate(url: Constants.login_url, callbackUrlScheme: "com.example.passive_marathon");
-    print(result);
-    final token = Uri.parse(result).queryParameters['token'];
-    print(token);
+    print('hello');
+    final result = await FlutterWebAuth.authenticate(
+        url: Constants.login_url, callbackUrlScheme: "passivemarathon");
+
+    setState(() {
+      // this is how to parse query parameters
+      // final token = Uri.parse(result).queryParameters['code'];
+      _status = 'Got result: $result';
+    });
+  }
+
+  String _status = '';
+
+  @override
+  void initState() {
+    super.initState();
+    startServer();
+  }
+
+  // TODO: separte into its own file if possible
+  Future<void> startServer() async {
+    final server = await HttpServer.bind('127.0.0.1', 43823);
+
+    server.listen((req) async {
+      setState(() {
+        _status = 'Received request!';
+      });
+      print("recieved request!");
+      req.response.headers.add('Content-Type', 'text/html');
+      req.response.close();
+    });
   }
 
   final List<Widget> _pages = <Widget>[
@@ -85,7 +112,9 @@ class LandingPagesState extends State<LandingPages> {
                 minWidth: 135,
                 child: RaisedButton(
                   color: Colors.grey[800].withOpacity(0.5),
-                  onPressed: _launchURL,
+                  onPressed: () {
+                    this._launchURL();
+                  },
                   child: const Text('Log In',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
