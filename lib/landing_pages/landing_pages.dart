@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import './page.dart';
 import './dots.dart';
 import './description_box.dart';
+import '../home_pages/home_page.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -31,9 +32,9 @@ class LandingPagesState extends State<LandingPages> {
   ];
 
   static var landingBody = [
-    "By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed",
-    "By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed",
-    "By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed",
+    "Start a race with your friends and complete it at your own time while encorperating fitness and competition. Beat your friends!",
+    "Your friends stand no chance when they compete with Passive Marathon. Get your distance in while destroying the enemy.",
+    "Set and achieve running goals with the help of Passive Marathon! A tool to help improve fitness and create ",
   ];
 
   void _launchURL() async {
@@ -53,9 +54,10 @@ class LandingPagesState extends State<LandingPages> {
     final result = await FlutterWebAuth.authenticate(
         url: Constants.login_url, callbackUrlScheme: "passivemarathon");
 
+    print("this is the result: " + result);
+    final token = Uri.parse(result).queryParameters['id'];
+    print("this is the token: " + token);
     setState(() {
-      // this is how to parse query parameters
-      // final token = Uri.parse(result).queryParameters['code'];
       _status = 'Got result: $result';
     });
   }
@@ -68,9 +70,11 @@ class LandingPagesState extends State<LandingPages> {
     startServer();
   }
 
-  // TODO: separte into its own file if possible
   Future<void> startServer() async {
     final server = await HttpServer.bind('127.0.0.1', 43823);
+
+    print("starting server");
+    print(server.address);
 
     server.listen((req) async {
       setState(() {
@@ -115,7 +119,7 @@ class LandingPagesState extends State<LandingPages> {
                   onPressed: () {
                     this._launchURL();
                   },
-                  child: const Text('Log In',
+                  child: const Text('Sign Up / Log In',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
               ),
@@ -128,8 +132,13 @@ class LandingPagesState extends State<LandingPages> {
                 minWidth: 135,
                 child: RaisedButton(
                   color: Colors.grey[800].withOpacity(0.5),
-                  onPressed: _launchURL,
-                  child: const Text('Sign Up',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
+                  },
+                  child: const Text('Continue',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
               ),
