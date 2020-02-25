@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:passive_marathon/db_management.dart';
 import '../constants.dart' as Constants;
 
 // Stateful widgets are used when you need to update the screen
@@ -30,7 +30,7 @@ class MarathonGroups extends StatelessWidget {
         child: RaisedButton(
           onPressed: () {
             Navigator.pop(context);
-          },
+            },
           child: Text('Go back!'),
         ),
       ),
