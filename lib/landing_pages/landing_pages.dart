@@ -32,7 +32,7 @@ class LandingPagesState extends State<LandingPages> {
   ];
 
   static var landingBody = [
-    "Start a race with your friends and complete it at your own time while encorperating fitness and competition. Beat your friends!",
+    "Start a race with your friends and complete it at your own time while incorperating fitness and competition. Beat your friends!",
     "Your friends stand no chance when they compete with Passive Marathon. Get your distance in while destroying the enemy.",
     "Set and achieve running goals with the help of Passive Marathon! A tool to help improve fitness and create ",
   ];
