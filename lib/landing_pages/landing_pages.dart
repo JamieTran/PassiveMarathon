@@ -1,13 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import './page.dart';
 import './dots.dart';
 import './description_box.dart';
+import '../home_pages/home_page.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import '../constants.dart' as Constants;
-
-
 
 class LandingPages extends StatefulWidget {
   @override
@@ -31,28 +32,58 @@ class LandingPagesState extends State<LandingPages> {
   ];
 
   static var landingBody = [
-    "By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed",
-    "By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed",
-    "By the same illusion which lifts the horizon of the sea to the level of the spectator on a hillside, the sable cloud beneath was dished out, and the car seemed",
+    "Start a race with your friends and complete it at your own time while incorperating fitness and competition. Beat your friends!",
+    "Your friends stand no chance when they compete with Passive Marathon. Get your distance in while destroying the enemy.",
+    "Set and achieve running goals with the help of Passive Marathon! A tool to help improve fitness and create ",
   ];
 
-  _launchURL() async {
-     final DynamicLinkParameters parameters = DynamicLinkParameters(
+  void _launchURL() async {
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
       uriPrefix: 'https://passivemarathon.page.link/callback',
       link: Uri.parse('https://passivemarathon.com/welcome'),
       androidParameters: AndroidParameters(
-          packageName: 'com.example.passive_marathon',
-          minimumVersion: 0,
+        packageName: 'com.example.passive_marathon',
+        minimumVersion: 0,
       ),
     );
 
     final Uri dynamicUrl = await parameters.buildUrl();
     print(dynamicUrl);
 
-    final result = await FlutterWebAuth.authenticate(url: Constants.login_url, callbackUrlScheme: "com.example.passive_marathon");
-    print(result);
-    final token = Uri.parse(result).queryParameters['token'];
-    print(token);
+    print('hello');
+    final result = await FlutterWebAuth.authenticate(
+        url: Constants.login_url, callbackUrlScheme: "passivemarathon");
+
+    print("this is the result: " + result);
+    final token = Uri.parse(result).queryParameters['id'];
+    print("this is the token: " + token);
+    setState(() {
+      _status = 'Got result: $result';
+    });
+  }
+
+  String _status = '';
+
+  @override
+  void initState() {
+    super.initState();
+    startServer();
+  }
+
+  Future<void> startServer() async {
+    final server = await HttpServer.bind('127.0.0.1', 43823);
+
+    print("starting server");
+    print(server.address);
+
+    server.listen((req) async {
+      setState(() {
+        _status = 'Received request!';
+      });
+      print("recieved request!");
+      req.response.headers.add('Content-Type', 'text/html');
+      req.response.close();
+    });
   }
 
   final List<Widget> _pages = <Widget>[
@@ -85,8 +116,10 @@ class LandingPagesState extends State<LandingPages> {
                 minWidth: 135,
                 child: RaisedButton(
                   color: Colors.grey[800].withOpacity(0.5),
-                  onPressed: _launchURL,
-                  child: const Text('Log In',
+                  onPressed: () {
+                    this._launchURL();
+                  },
+                  child: const Text('Sign Up / Log In',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
               ),
@@ -99,8 +132,13 @@ class LandingPagesState extends State<LandingPages> {
                 minWidth: 135,
                 child: RaisedButton(
                   color: Colors.grey[800].withOpacity(0.5),
-                  onPressed: _launchURL,
-                  child: const Text('Sign Up',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
+                  },
+                  child: const Text('Continue',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
               ),
