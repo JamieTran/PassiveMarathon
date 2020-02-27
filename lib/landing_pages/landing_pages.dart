@@ -38,52 +38,21 @@ class LandingPagesState extends State<LandingPages> {
   ];
 
   void _launchURL() async {
-    final DynamicLinkParameters parameters = DynamicLinkParameters(
-      uriPrefix: 'https://passivemarathon.page.link/callback',
-      link: Uri.parse('https://passivemarathon.com/welcome'),
-      androidParameters: AndroidParameters(
-        packageName: 'com.example.passive_marathon',
-        minimumVersion: 0,
-      ),
-    );
-
-    final Uri dynamicUrl = await parameters.buildUrl();
-    print(dynamicUrl);
-
-    print('hello');
     final result = await FlutterWebAuth.authenticate(
         url: Constants.login_url, callbackUrlScheme: "passivemarathon");
 
-    print("this is the result: " + result);
     final token = Uri.parse(result).queryParameters['id'];
-    print("this is the token: " + token);
-    setState(() {
-      _status = 'Got result: $result';
-    });
-  }
 
-  String _status = '';
-
-  @override
-  void initState() {
-    super.initState();
-    startServer();
-  }
-
-  Future<void> startServer() async {
-    final server = await HttpServer.bind('127.0.0.1', 43823);
-
-    print("starting server");
-    print(server.address);
-
-    server.listen((req) async {
-      setState(() {
-        _status = 'Received request!';
-      });
-      print("recieved request!");
-      req.response.headers.add('Content-Type', 'text/html');
-      req.response.close();
-    });
+    switch (int.parse(token)) {
+      case 0:
+        break;
+      default:
+      // TODO: Add saving of user to login constants
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+    }
   }
 
   final List<Widget> _pages = <Widget>[
