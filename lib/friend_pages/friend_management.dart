@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:passive_marathon/db_management.dart';
 import 'package:passive_marathon/friend_pages/friend_add_page.dart';
 import '../constants.dart' as Constants;
+import 'friend_add_page.dart';
 
 // Stateful widgets are used when you need to update the screen
 // with data constantly, this works for passive marathon
@@ -12,19 +13,32 @@ class FriendScreen extends StatefulWidget {
 }
 
 class FriendsManagement extends State<FriendScreen> {
-
 @override
 void initState() {
   super.initState();
-  //updateList();
+  updateList();
 }
 
-List<dynamic> friendsArray = new List<dynamic>();
+//ist<dynamic> friendsArray = new List<dynamic>();
+
+List<String> friendsList = new List<String>();
+var friendArray =[];
 
 updateList()
 {
-  friendsArray = DatabaseManagement().getFriends();
-  print("OUTSIDE FUNCTION --->" + friendsArray.toString());
+  friendArray.clear();
+  friendsList.clear();
+  DatabaseManagement().getFriendsArray().get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      friendsList = List.from(datasnapshot.data['friends']);
+      for (int i=0;i<friendsList.length;i++){
+        setState((){
+          friendArray.add(friendsList[i]);
+          });      
+        }
+      print("OUTSIDE FUNCTION ->"+friendArray.toString());
+    }
+  });
 }
 
   Widget build(BuildContext context) {
@@ -37,24 +51,32 @@ updateList()
             IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
-                Navigator.push(
+                setState(() {
+                  updateList();
+                });
+               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => FriendAdd())
-            ); 
+                MaterialPageRoute(builder: (context) => FriendAdd()));
               },
             ),
         ]),
       backgroundColor: Constants.bright_white,
-      body: Center(
-//        child:ListView.builder(
-//        //itemCount: friendsArray.length,
-//        itemBuilder: (context, index) {
-//          return ListTile(
-//           title: Text(friendsArray[index]),
-//          );
-//        },
-//      ),
-      ),
+      body:
+        ListView(
+          children: <Widget>[
+            SizedBox(height:10.0),
+            GridView.count(
+              padding: EdgeInsets.only(left:10.0, right:10.0),
+              crossAxisCount: 2,
+              crossAxisSpacing: 4.0,
+              mainAxisSpacing: 4.0,
+              primary:false,
+              shrinkWrap: true,
+              children: friendArray.map((element) {
+                return buildResultCard(element, element,context, Constants.remove_friend, updateList);
+              }).toList()),
+          ],
+        )
     );
   }
 }

@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:passive_marathon/db_management.dart';
+import '../constants.dart' as Constants;
 
 class FriendAdd extends StatefulWidget {
   @override 
@@ -86,7 +87,7 @@ initiateSearch(username) {
               primary:false,
               shrinkWrap: true,
               children: tempSearchStore.map((element) {
-                return buildResultCard(element, context);
+                return buildResultCard(element['name'],element, context, Constants.add_friend,null);
               }).toList()),
           ],
         )
@@ -94,16 +95,16 @@ initiateSearch(username) {
   }
 }
 
-Widget buildResultCard(data, context) {
+Widget buildResultCard(dataField, dataObject, context, feature, Function updateFunc) {
   return new GestureDetector(
-  onTap: ()=> showAlertDialog(context, data),
+  onTap: ()=> showAlertDialog(context, dataField, dataObject, feature, updateFunc),
   child: new Card(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0)),
       elevation: 2.0,
       child: Container(
         child: Center (
-          child: Text(data['name'],
+          child: Text(dataField,
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.black,
@@ -115,37 +116,81 @@ Widget buildResultCard(data, context) {
   );
 }
 
-showAlertDialog(BuildContext context, data) {
+showAlertDialog(BuildContext context, dataField, dataObject, int feature, Function updateFunc) {
   // set up the buttons
-  Widget cancelButton = FlatButton(
-    child: Text("Cancel"),
-    onPressed:  () {
-      Navigator.of(context).pop(); // dismiss dialog
-    },
-  );
-  Widget continueButton = FlatButton(
-    child: Text("Confirm"),
-    onPressed:  () {
-      Navigator.of(context).pop(); // dismiss dialog
-      DatabaseManagement().addFriend(data['name']);
-    },
-  );
+  switch (feature)
+  {
+    case Constants.add_friend: {
+      Widget cancelButton = FlatButton(
+        child: Text("Cancel"),
+        onPressed:  () {
+          Navigator.of(context).pop(); // dismiss dialog
+        },
+      );
+      Widget continueButton = FlatButton(
+        child: Text("Confirm"),
+        onPressed:  () {
+          Navigator.of(context).pop(); // dismiss dialog
+          DatabaseManagement().addFriend(dataObject['name']);
+        },
+      );
 
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: Text("Add Friend"),
-    content: Text("Would you like to add "+data['name']+" as your friend?"),
-    actions: [
-      cancelButton,
-      continueButton,
-    ],
-  );
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: Text("Add Friend"),
+        content: Text("Would you like to add "+dataField+" as your friend?"),
+        actions: [
+          cancelButton,
+          continueButton,
+        ],
+      );
 
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+        }
+    break;
+  case Constants.remove_friend: {
+    Widget cancelButton = FlatButton(
+            child: Text("Cancel"),
+            onPressed:  () {
+              Navigator.of(context).pop(); // dismiss dialog
+            },
+          );
+          Widget continueButton = FlatButton(
+            child: Text("Confirm"),
+            onPressed:  () {
+              Navigator.of(context).pop(); // dismiss dialog
+              DatabaseManagement().removeFriend(dataObject);
+              if (updateFunc != null)
+              {
+                updateFunc();
+              }
+            },
+          );
+
+          // set up the AlertDialog
+          AlertDialog alert = AlertDialog(
+            title: Text("Remove Friend"),
+            content: Text("Would you like to remove "+dataField+" from your friend list?"),
+            actions: [
+              cancelButton,
+              continueButton,
+            ],
+          );
+
+          // show the dialog
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return alert;
+            },
+          );
+    }
+    break;
+}
 }
