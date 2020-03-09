@@ -50,13 +50,14 @@ updateList()
             // action button
             IconButton(
               icon: Icon(Icons.add),
-              onPressed: () {
-                setState(() {
-                  updateList();
-                });
-               Navigator.push(
+              onPressed: () async {
+              //String result = await Navigator.of(context).pushNamed('/friendadd');
+               await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => FriendAdd()));
+                setState((){
+                  updateList();
+               }); 
               },
             ),
         ]),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:passive_marathon/db_management.dart';
 import '../constants.dart' as Constants;
+import 'friend_management.dart';
 
 class FriendAdd extends StatefulWidget {
   @override 
@@ -89,7 +90,7 @@ initiateSearch(username) {
               children: tempSearchStore.map((element) {
                 return buildResultCard(element['name'],element, context, Constants.add_friend,null);
               }).toList()),
-          ],
+         ],
         )
       );
   }
@@ -163,13 +164,16 @@ showAlertDialog(BuildContext context, dataField, dataObject, int feature, Functi
           );
           Widget continueButton = FlatButton(
             child: Text("Confirm"),
-            onPressed:  () {
+            onPressed:  () async {
               Navigator.of(context).pop(); // dismiss dialog
               DatabaseManagement().removeFriend(dataObject);
               if (updateFunc != null)
               {
                 updateFunc();
               }
+                // The content doesn't update when you remove it. This is because when we click on a user in the friend
+                // list, it will open a new page, when we return from that page, thats when we can refresh this.
+                // This is similar to how the list is refreshed when we add a friend.
             },
           );
 
