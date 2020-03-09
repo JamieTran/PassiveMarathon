@@ -54,9 +54,9 @@ class DatabaseManagement{
     });
   }
 
-getFriendsArray() {
-  return databaseReference.collection('users').document('NPne34FyhahEnMXHaYh5');
-}
+  getFriendsArray() {
+    return databaseReference.collection('users').document('NPne34FyhahEnMXHaYh5');
+  }
 
   getFriends() async {
     DocumentReference array = databaseReference.collection('users').document('NPne34FyhahEnMXHaYh5');
