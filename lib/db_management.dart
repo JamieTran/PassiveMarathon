@@ -40,15 +40,39 @@ class DatabaseManagement{
     });
   }
 
-  getFriends() {
+  removeFriend(friendName) {
     DocumentReference array =  databaseReference.collection('users').document('NPne34FyhahEnMXHaYh5');
-    List<dynamic> friendArray = List<dynamic>();
+
     array.get().then((datasnapshot) {
     if (datasnapshot.exists) {
-      friendArray = datasnapshot.data['friends'].toList();
-      print("ARRAY---> " + friendArray.toString());
+      List<dynamic> friendArray = datasnapshot.data['friends'].toList();
+      print("removing " + friendName);
+      friendArray.remove(friendName);
+      print("ARRAY ->"+friendArray.toString());
+      databaseReference.collection('users').document('NPne34FyhahEnMXHaYh5').updateData({"friends": friendArray});
+      }
+    });
+  }
+
+getFriendsArray() {
+  return databaseReference.collection('users').document('NPne34FyhahEnMXHaYh5');
+}
+
+  getFriends() async {
+    DocumentReference array = databaseReference.collection('users').document('NPne34FyhahEnMXHaYh5');
+    List<String> friendArray = new List<String>();
+    await array.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      friendArray = List.from(datasnapshot.data['friends']);
+      friendArray.forEach((element) => 
+        print(element)
+    );
+      print("INSIDE FUNCTION ->"+friendArray.toString());
+      return friendArray;
     }
     return friendArray;
   });
   }
+
+  
 }
