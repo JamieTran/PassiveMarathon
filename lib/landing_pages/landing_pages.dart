@@ -41,7 +41,7 @@ class LandingPagesState extends State<LandingPages> {
     final result = await FlutterWebAuth.authenticate(
         url: Constants.login_url, callbackUrlScheme: "passivemarathon");
 
-    final token = Uri.parse(result).queryParameters['id'];
+    final token = Uri.parse(result).queryParameters['userId'];
 
     switch (int.parse(token)) {
       case 0:
