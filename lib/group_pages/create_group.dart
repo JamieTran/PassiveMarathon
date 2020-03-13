@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:passive_marathon/db_management.dart';
 import './distance_slider.dart';
 
 class CreateGroup extends StatefulWidget{
@@ -10,6 +11,9 @@ class CreateGroup extends StatefulWidget{
 }
     
 class _CreateGroupState extends State{
+
+  TextEditingController groupName = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -18,6 +22,7 @@ class _CreateGroupState extends State{
           child: Column( 
             children: <Widget> [
               TextField(
+                controller: groupName,
                 decoration: InputDecoration(hintText: "Name of Group"),
               ),
               Padding(
@@ -25,9 +30,6 @@ class _CreateGroupState extends State{
                 child: Text("Distance"),
               ),
               DistanceSlider(),
-              TextField(
-                decoration: InputDecoration(hintText: "Name of Group"),
-              ),
             ],
           ),
         ),
@@ -42,6 +44,7 @@ class _CreateGroupState extends State{
           child: new Text('ADD'),
           onPressed: () {
             Navigator.of(context).pop();
+            
           },
         )
       ],
