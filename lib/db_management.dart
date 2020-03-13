@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DatabaseManagement{
 
   final databaseReference = Firestore.instance;
+  final dBCodeNameRef = "n577th9XQjF5eaa1HCp3";
 
   void createUser(id) async {
     print('Add user');
@@ -17,10 +18,26 @@ class DatabaseManagement{
     });
   }
 
-  void createGroup(groupName) async {
-  await groupName.collection("groups")
-      .document(groupName);
+  void createGroup(String groupName, groupDistance) async
+  {
+    await databaseReference.collection("groups").document(groupName)
+    .setData({
+      'groupName':groupName,
+      'distance':groupDistance,
+      'members':[''],
+    });
+
+    DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
+
+    array.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      List<dynamic> groupArray = datasnapshot.data['groups'].toList();
+      groupArray.add(groupName);
+      databaseReference.collection('users').document(dBCodeNameRef).updateData({"groups": FieldValue.arrayUnion(groupArray)});
+      }
+    });
   }
+
 
   queryUsers(String username) {
     return databaseReference.collection('users')
@@ -29,19 +46,19 @@ class DatabaseManagement{
   }
 
   addFriend(addedFriend) { // Add to Adam Array because he is lonely
-    DocumentReference array =  databaseReference.collection('users').document('NPne34FyhahEnMXHaYh5');
+    DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
 
     array.get().then((datasnapshot) {
     if (datasnapshot.exists) {
       List<dynamic> friendArray = datasnapshot.data['friends'].toList();
       friendArray.add(addedFriend);
-      databaseReference.collection('users').document('NPne34FyhahEnMXHaYh5').updateData({"friends": FieldValue.arrayUnion(friendArray)});
+      databaseReference.collection('users').document(dBCodeNameRef).updateData({"friends": FieldValue.arrayUnion(friendArray)});
       }
     });
   }
 
   removeFriend(friendName) {
-    DocumentReference array =  databaseReference.collection('users').document('NPne34FyhahEnMXHaYh5');
+    DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
 
     array.get().then((datasnapshot) {
     if (datasnapshot.exists) {
@@ -49,17 +66,17 @@ class DatabaseManagement{
       print("removing " + friendName);
       friendArray.remove(friendName);
       print("ARRAY ->"+friendArray.toString());
-      databaseReference.collection('users').document('NPne34FyhahEnMXHaYh5').updateData({"friends": friendArray});
+      databaseReference.collection('users').document(dBCodeNameRef).updateData({"friends": friendArray});
       }
     });
   }
 
   getFriendsArray() {
-    return databaseReference.collection('users').document('NPne34FyhahEnMXHaYh5');
+    return databaseReference.collection('users').document(dBCodeNameRef);
   }
 
   getFriends() async {
-    DocumentReference array = databaseReference.collection('users').document('NPne34FyhahEnMXHaYh5');
+    DocumentReference array = databaseReference.collection('users').document(dBCodeNameRef);
     List<String> friendArray = new List<String>();
     await array.get().then((datasnapshot) {
     if (datasnapshot.exists) {
