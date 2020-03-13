@@ -62,7 +62,7 @@ class _CreateGroupState extends State{
           onPressed: () {
             print(_value);
             Navigator.of(context).pop();
-            
+            DatabaseManagement().createGroup(groupName.text, _value);
           },
         )
       ],
