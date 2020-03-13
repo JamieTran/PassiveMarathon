@@ -24,7 +24,7 @@ class DatabaseManagement{
     .setData({
       'groupName':groupName,
       'distance':groupDistance,
-      'members':[''],
+      'members':[dBCodeNameRef],
     });
 
     DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
