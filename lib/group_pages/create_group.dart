@@ -43,9 +43,6 @@ class _CreateGroupState extends State{
                   });
                 },
               ),
-              TextField(
-                decoration: InputDecoration(hintText: "Name of Group"),
-              ),
             ],
           ),
         ),
