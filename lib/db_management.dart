@@ -75,6 +75,11 @@ class DatabaseManagement{
     return databaseReference.collection('users').document(dBCodeNameRef);
   }
 
+  getGroupsArray() {
+    print("Getting Groups Array");
+    return databaseReference.collection('users').document(dBCodeNameRef);
+  }
+
   getFriends() async {
     DocumentReference array = databaseReference.collection('users').document(dBCodeNameRef);
     List<String> friendArray = new List<String>();
