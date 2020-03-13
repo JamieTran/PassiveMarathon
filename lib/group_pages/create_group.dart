@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:passive_marathon/db_management.dart';
-import './distance_slider.dart';
 
 class CreateGroup extends StatefulWidget{
 
