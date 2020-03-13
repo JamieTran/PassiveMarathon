@@ -46,13 +46,13 @@ class MarathonGroups extends StatelessWidget {
           return CreateGroup();
         });
     } else if (choice == Constants.add_group) {
-      print('Add group page here');
+      print('Add Group page here');
     } else if (choice == Constants.leave_group) {
       print('Leave Group page here');
     }
   }
 
-}
+
 
 class Choice {
   const Choice({this.title, this.icon});
