@@ -13,6 +13,7 @@ class CreateGroup extends StatefulWidget{
 class _CreateGroupState extends State{
 
   TextEditingController groupName = TextEditingController();
+  double _value = 42;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,23 @@ class _CreateGroupState extends State{
                 padding: EdgeInsets.only(top: 16.0),
                 child: Text("Distance"),
               ),
-              DistanceSlider(),
+              Slider(
+                value: _value.toDouble(),
+                min: 0.1,
+                max: 42,
+                divisions: 420,
+                activeColor: Colors.red,
+                inactiveColor: Colors.black,
+                label: _value.toStringAsFixed(1) + " kms",
+                onChanged: (double newValue) {
+                  setState(() {
+                    _value = newValue;
+                  });
+                },
+              ),
+              TextField(
+                decoration: InputDecoration(hintText: "Name of Group"),
+              ),
             ],
           ),
         ),
@@ -43,6 +60,7 @@ class _CreateGroupState extends State{
         new FlatButton(
           child: new Text('ADD'),
           onPressed: () {
+            print(_value);
             Navigator.of(context).pop();
             
           },
