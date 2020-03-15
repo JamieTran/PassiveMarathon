@@ -20,11 +20,21 @@ class DatabaseManagement{
 
   void createGroup(String groupName, groupDistance) async
   {
+
+    DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
+    var name;
+
+    await doc.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      name = datasnapshot.data['name'].toString();
+      }
+    });
+
     await databaseReference.collection("groups").document(groupName)
     .setData({
       'groupName':groupName,
-      'distance':groupDistance,
-      'members':[dBCodeNameRef],
+      'groupDistance':groupDistance,
+      'membersInfo':[{"name":name,"distance":0,"reference":dBCodeNameRef}]
     });
 
     DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
@@ -38,6 +48,19 @@ class DatabaseManagement{
     });
   }
 
+  void getNameFromCode (codeNameRef) async
+  {
+    DocumentReference doc = databaseReference.collection('users').document(codeNameRef);
+    var name;
+
+    await doc.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      name = datasnapshot.data['name'].toString();
+      }
+    });
+
+    return name;
+  }
 
   queryUsers(String username) {
     return databaseReference.collection('users')
@@ -55,6 +78,11 @@ class DatabaseManagement{
       databaseReference.collection('users').document(dBCodeNameRef).updateData({"friends": FieldValue.arrayUnion(friendArray)});
       }
     });
+  }
+
+  getGroupStreamSnapShot(documentRef)
+  {
+    return databaseReference.collection("groups").document(documentRef).snapshots();
   }
 
   removeFriend(friendName) {
