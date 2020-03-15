@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:passive_marathon/db_management.dart';
+import 'package:passive_marathon/group_pages/group_page.dart';
 
 class CreateGroup extends StatefulWidget{
 
@@ -64,12 +65,14 @@ class _CreateGroupState extends State{
       ],
     );
   }
-
 }
 
 Widget buildResultCard(dataField, dataObject, context, feature, Function updateFunc) {
   return new GestureDetector(
-  //onTap: ()=> ,
+  onTap: ()=> Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => GroupScreen(dataObject)),
+    ),
   child: new Card(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0)),
