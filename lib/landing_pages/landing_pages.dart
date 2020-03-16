@@ -42,12 +42,14 @@ class LandingPagesState extends State<LandingPages> {
         url: Constants.login_url, callbackUrlScheme: "passivemarathon");
 
     final token = Uri.parse(result).queryParameters['userId'];
+    print(token);
 
     switch (int.parse(token)) {
       case 0:
         break;
       default:
       // TODO: Add saving of user to login constants
+      print(int.parse(token));
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
