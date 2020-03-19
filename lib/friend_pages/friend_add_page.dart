@@ -16,6 +16,7 @@ class FriendAddState extends State<FriendAdd> {
 
 var queryResultSet = [];
 var tempSearchStore = [];
+var docIDSet = {};
 
 initiateSearch(username) {
   // If user backspaces, clear arrays
@@ -23,6 +24,7 @@ initiateSearch(username) {
       setState(() {
       queryResultSet = [];
       tempSearchStore = [];
+      docIDSet.clear();
       });
     }
 
@@ -33,6 +35,7 @@ initiateSearch(username) {
     DatabaseManagement().queryUsers(username).then((QuerySnapshot docs) {
       for (int i=0;i<docs.documents.length;i++){
         queryResultSet.add(docs.documents[i].data);
+        docIDSet[docs.documents[i].data['name']] = docs.documents[i].documentID;
       }
     });
   }
@@ -88,7 +91,7 @@ initiateSearch(username) {
               primary:false,
               shrinkWrap: true,
               children: tempSearchStore.map((element) {
-                return buildResultCard(element['name'],element, context, Constants.add_friend,null);
+                return buildResultCard(element['name'],element, docIDSet[element['name']],context, Constants.add_friend,null);
               }).toList()),
          ],
         )
@@ -96,9 +99,9 @@ initiateSearch(username) {
   }
 }
 
-Widget buildResultCard(dataField, dataObject, context, feature, Function updateFunc) {
+Widget buildResultCard(dataField, dataObject, dataObjectDoc, context, feature, Function updateFunc) {
   return new GestureDetector(
-  onTap: ()=> showAlertDialog(context, dataField, dataObject, feature, updateFunc),
+  onTap: ()=> showAlertDialog(context, dataField, dataObject, dataObjectDoc, feature, updateFunc),
   child: new Card(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0)),
@@ -117,7 +120,7 @@ Widget buildResultCard(dataField, dataObject, context, feature, Function updateF
   );
 }
 
-showAlertDialog(BuildContext context, dataField, dataObject, int feature, Function updateFunc) {
+showAlertDialog(BuildContext context, dataField, dataObject, dataObjectDoc,int feature, Function updateFunc) {
   // set up the buttons
   switch (feature)
   {
@@ -132,7 +135,7 @@ showAlertDialog(BuildContext context, dataField, dataObject, int feature, Functi
         child: Text("Confirm"),
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
-          DatabaseManagement().addFriend(dataObject['name']);
+          DatabaseManagement().addFriend(dataObject['name'], dataObjectDoc);
         },
       );
 
