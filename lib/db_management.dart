@@ -5,6 +5,12 @@ class DatabaseManagement{
   final databaseReference = Firestore.instance;
   final dBCodeNameRef = "n577th9XQjF5eaa1HCp3";
 
+  final dbCodeMateusRef = "qg6qy3W7SpRQz4XoVQyo";
+  final dbCodeMannyRef = "hYN5tKpN2qwYMF5w0hmI";
+  final dbJamieRef = "XmnSMwyrdZaAuX3JK4K3";
+  final dbEdRef = "amxnWsw1MGtECRVYmQuC";
+  final dbRussRef = "LhWmzxZrtzDP6wZ81EWM";
+
   void createUser(id) async {
     print('Add user');
   await databaseReference.collection("users")
@@ -16,6 +22,12 @@ class DatabaseManagement{
       'token':'',
       'friends': [''],
     });
+  }
+
+  void getGroupName()
+  {
+    DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
+    var name;
   }
 
   void createGroup(String groupName, groupDistance) async
@@ -34,7 +46,12 @@ class DatabaseManagement{
     .setData({
       'groupName':groupName,
       'groupDistance':groupDistance,
-      'membersInfo':[{"name":name,"distance":0,"reference":dBCodeNameRef}]
+      'membersInfo':[{"name":name,"distance":32,"reference":dBCodeNameRef},
+                     {"name":"Mateus Gurgel","distance":28,"reference":dbCodeMateusRef},
+                     {"name":"Ed Barsalou","distance":20, "reference":dbEdRef},
+                     {"name":"Russ Foubert","distance":16, "reference":dbRussRef},
+                     {"name":"Manuel Poppe Richter","distance":13,"reference":dbCodeMannyRef},
+                     {"name":"Jamie Tran","distance":10,"reference":dbJamieRef}]
     });
 
     DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
@@ -85,6 +102,11 @@ class DatabaseManagement{
     return databaseReference.collection("groups").document(documentRef).snapshots();
   }
 
+  getFriendList()
+  {
+    return databaseReference.collection('users').document(dBCodeNameRef);
+  }
+
   removeFriend(friendName) {
     DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
 
@@ -101,6 +123,27 @@ class DatabaseManagement{
 
   getFriendsArray() {
     return databaseReference.collection('users').document(dBCodeNameRef);
+  }
+
+  addFriendToGroup(objectData, groupData) {
+    // Add friend to group array
+    DocumentReference array =  databaseReference.collection('groups').document(groupData);
+
+    array.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      List<dynamic> memberArray = datasnapshot.data['membersInfo'].toList();
+      memberArray.add({"name":objectData,"distance":0,"reference":"subForActualVal"});
+      databaseReference.collection('groups').document(groupData).updateData({"membersInfo": FieldValue.arrayUnion(memberArray)});
+      }
+    });
+
+    // Add group to friend's group array
+
+    // NOTE * NEED TO CONTINUE FROM HERE BECAUSE FRIENDS HAVE TO BE REDONE
+    // STORE DBREF WITH FRIENDS ARRAY 
+    return databaseReference.collection('users').document(dBCodeNameRef);
+
+
   }
 
   getGroupsArray() {
