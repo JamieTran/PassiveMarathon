@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:passive_marathon/db_management.dart';
+import 'package:passive_marathon/group_pages/add_member.dart';
 import '../constants.dart' as Constants;
 
 class GroupScreen extends StatefulWidget {
@@ -22,23 +23,22 @@ class GroupPage extends State<GroupScreen> {
 
   GroupPage(this.groupData);
 
-  Widget _buildListItem(BuildContext context, document)
+  Widget _buildListItem(BuildContext context, document, groupDistance, indexVal)
   {
     return ListTile(
-      title: Row(children: [
-        Expanded(child: Text(
-          document["name"].toString())
+      title: Row(
+        children: [
+          Expanded( child:
+            Container(
+              color: determineBackgroundColor(indexVal),
+              child: 
+                _tile(document["name"].toString(), (document["distance"]/groupDistance),document["distance"], Icons.account_circle, indexVal),
+                )
+          )
+              ],
           ),
-          Container(decoration: const BoxDecoration(
-            color: Color(0xffddddff),
-          ),
-          padding: const EdgeInsets.all(10.0),
-          child: Text(
-            document["distance"].toString()),
-          )],
-      ),
       onTap: () {
-        //
+          // Profile Page 
       },
     );
   }
@@ -47,21 +47,48 @@ class GroupPage extends State<GroupScreen> {
     Widget build(BuildContext context) {
       return new Scaffold(
         appBar: new AppBar(
-          title: Text('Group Title'),
+          title: Text(groupData.toString()),
           backgroundColor: Constants.bright_red,
+          actions: <Widget>[
+            // action button
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddMember(groupData))
+            );  
+              },
+            ),
+        ]
         ),
-        body: StreamBuilder(
-          stream: DatabaseManagement().getGroupStreamSnapShot(groupData),
-          builder:(context, snapshot) {
-            if (!snapshot.hasData) return const Text('Loading...');
-            return ListView.builder(
-              itemExtent: 80.0,
-              itemCount: snapshot.data["membersInfo"].length,
-              itemBuilder: (context, index) =>
-                _buildListItem(context, snapshot.data["membersInfo"][index]), //snapshot.data.documents[index]
-            );
-          },
-        ),
+        backgroundColor: Constants.bright_white,
+        body:
+        Column(
+          children :[
+/*             TextField(
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Entire Race Progress Here'
+              ),
+            ), */
+            Expanded( child: 
+            StreamBuilder(
+              stream: DatabaseManagement().getGroupStreamSnapShot(groupData),
+              builder:(context, snapshot) {
+                if (!snapshot.hasData) return const Text('Loading...');
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemExtent: 80.0,
+                  itemCount: snapshot.data["membersInfo"].length,
+                  itemBuilder: (context, index) =>
+                    _buildListItem(context, snapshot.data["membersInfo"][index], snapshot.data["groupDistance"], index), //snapshot.data.documents[index]
+                );
+              },
+            )
+            )
+          ]
+        )
       );
   }
 }
@@ -85,4 +112,74 @@ Widget buildResultCard(dataField, dataObject, context, feature, Function updateF
       ),
     )
   );
+}
+
+ListTile _tile(String title, distance, distanceComplete, IconData icon, indexVal) => ListTile(
+      title: Text(title,
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 20,
+          )),
+      subtitle: LinearProgressIndicator(
+      value: distance,
+      valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue[300]),
+      backgroundColor: Constants.bright_white,
+      ),
+      leading: Icon(
+        icon,
+        color: Colors.black,
+        size: 50,
+      ),
+      trailing: Text(distanceComplete.toString() + ' Km'),
+    );
+
+determinePosition(place)
+{
+  switch (place)
+  {
+    case 0:
+      return Icon(Icons.flag, color: Colors.black, size:25);
+    break;
+    default:
+      return null;
+    break;
+  }
+}
+
+determineBackgroundColor(place)
+{
+    switch (place)
+  {
+    case 0:
+      return Constants.nautical_yellow;
+    break;
+    case 1:
+      return Constants.place_second;
+    break;
+    case 2:
+      return Constants.place_third;
+    break;
+    default:
+      return Constants.bright_white;
+    break;
+  }
+}
+
+determineColor(place)
+{
+  switch (place)
+  {
+    case 0:
+      return new AlwaysStoppedAnimation<Color>(Colors.yellow[200]);
+    break;
+    case 1:
+      return new AlwaysStoppedAnimation<Color>(Colors.grey[300]);
+    break;
+    case 2:
+      return new AlwaysStoppedAnimation<Color>(Colors.brown[300]);
+    break;
+    default:
+      return new AlwaysStoppedAnimation<Color>(Colors.blue[300]);
+    break;
+  }
 }
