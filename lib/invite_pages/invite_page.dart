@@ -20,22 +20,22 @@ void initState() {
 
 //ist<dynamic> friendsArray = new List<dynamic>();
 
-List<String> friendsList = new List<String>();
-var friendArray =[];
+List<String> invitesList = new List<String>();
+var invitesArray =[];
 
 updateList()
 {
-  friendArray.clear();
-  friendsList.clear();
+  invitesArray.clear();
+  invitesList.clear();
   DatabaseManagement().getFriendsArray().get().then((datasnapshot) {
     if (datasnapshot.exists) {
-      friendsList = List.from(datasnapshot.data['friends']);
-      for (int i=0;i<friendsList.length;i++){
+      invitesList = List.from(datasnapshot.data['friends']);
+      for (int i=0;i<invitesList.length;i++){
         setState((){
-          friendArray.add(friendsList[i]);
+          invitesArray.add(invitesList[i]);
           });      
         }
-      print("OUTSIDE FUNCTION ->"+friendArray.toString());
+      print("OUTSIDE FUNCTION ->"+invitesArray.toString());
     }
   });
 }
@@ -45,7 +45,6 @@ updateList()
       appBar: AppBar(
         title: Text("Invitations"),
         backgroundColor: Constants.bright_blue),
-        backgroundColor: Constants.bright_white,
         body:
           ListView(
             children: <Widget>[
@@ -57,7 +56,7 @@ updateList()
                 mainAxisSpacing: 4.0,
                 primary:false,
                 shrinkWrap: true,
-                children: friendArray.map((element) {
+                children: invitesArray.map((element) {
                   return buildResultCard(element, element,context, Constants.remove_friend, updateList);
                 }).toList()),
             ],
