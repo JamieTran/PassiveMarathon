@@ -26,12 +26,17 @@ const Color bright_blue = Color(0xff3cbee3);
 const Color bright_yellow = Color(0xfffdb321);
 const Color bright_purple = Color(0xffa862ac);
 
+const Color place_first = Color(0xFFF2DFA7);
+const Color place_second = Color(0xFFF2F2F2);
+const Color place_third = Color(0xFFD9AB9A);
+const Color place_back = Color(0xFF591902);
+
 const String create_group = 'Create Group';
 const String add_group = 'Add Group';
 const String leave_group = 'Leave Group';
 
-const int add_friend =0;
-const int remove_friend=1;
+const int add_friend = 0;
+const int remove_friend = 1;
 
 //TODO: will have to change this to marathon login page
 const String login_url = "https://marathon-18119.firebaseapp.com/";
