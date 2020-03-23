@@ -46,3 +46,5 @@ const List<String> choices = <String>[
   add_group,
   leave_group,
 ];
+
+const int add_friend_to_group=0;
