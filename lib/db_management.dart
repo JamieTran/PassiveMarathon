@@ -97,6 +97,11 @@ class DatabaseManagement{
     });
   }
 
+  sendFriendRequest(receiverName, receiverRef)
+  {
+    
+  }
+
   getGroupStreamSnapShot(documentRef)
   {
     return databaseReference.collection("groups").document(documentRef).snapshots();
@@ -121,6 +126,15 @@ class DatabaseManagement{
 
   getFriendsArray() {
     return databaseReference.collection('users').document(dBCodeNameRef);
+  }
+    // Did you notice these two functions return the same thing? I didn't. 
+    // Don't worry I will be cleaning this up
+  getInvitesArray() {
+    return databaseReference.collection('users').document(dBCodeNameRef);
+  }
+
+  removeRequest(object) {
+
   }
 
   addFriendToGroup(objectData, groupData) {

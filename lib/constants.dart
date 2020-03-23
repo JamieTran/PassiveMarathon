@@ -35,8 +35,12 @@ const String create_group = 'Create Group';
 const String add_group = 'Add Group';
 const String leave_group = 'Leave Group';
 
-const int add_friend = 0;
-const int remove_friend = 1;
+const int add_friend =0;
+const int remove_friend=1;
+const int join_group=2;
+
+const String friend_request= 'Friend Request';
+const String group_request= 'Group Request';
 
 //TODO: will have to change this to marathon login page
 const String login_url = "https://marathon-18119.firebaseapp.com/";

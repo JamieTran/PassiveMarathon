@@ -20,22 +20,26 @@ void initState() {
 
 //ist<dynamic> friendsArray = new List<dynamic>();
 
-List<String> invitesList = new List<String>();
+List<dynamic> invitesList = new List<dynamic>();
+List<dynamic> outsideFunc = new List<dynamic>();
 var invitesArray =[];
 
 updateList()
 {
   invitesArray.clear();
   invitesList.clear();
-  DatabaseManagement().getFriendsArray().get().then((datasnapshot) {
+  DatabaseManagement().getInvitesArray().get().then((datasnapshot) {
     if (datasnapshot.exists) {
-      invitesList = List.from(datasnapshot.data['friends']);
-      for (int i=0;i<invitesList.length;i++){
+      setState((){
+        invitesList = (datasnapshot.data['invites']);
+      }); 
+      print("List of Map Contains ->" +invitesList.toString());
         setState((){
-          invitesArray.add(invitesList[i]);
+          outsideFunc = invitesList;
           });      
-        }
-      print("OUTSIDE FUNCTION ->"+invitesArray.toString());
+        
+      //print("OUTSIDE FUNCTION ->"+invitesArray.toString());
+      print("OUTSIDE MAP ->"+outsideFunc.toString());
     }
   });
 }
@@ -56,8 +60,9 @@ updateList()
                 mainAxisSpacing: 4.0,
                 primary:false,
                 shrinkWrap: true,
-                children: invitesArray.map((element) {
-                  return buildResultCard(element, element,context, Constants.remove_friend, updateList);
+                children: outsideFunc.map((element) {
+                  print(element.toString());
+                  return buildResultCard(element,context);
                 }).toList()),
             ],
           )
@@ -66,16 +71,16 @@ updateList()
 }
 
 
-Widget buildResultCard(dataField, dataObject, context, feature, Function updateFunc) {
+Widget buildResultCard(data, context) {
   return new GestureDetector(
-  onTap: ()=> showAlertDialog(context, dataField, dataObject, feature, updateFunc),
+  onTap: ()=> showAlertDialog(context, data),
   child: new Card(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0)),
       elevation: 2.0,
       child: Container(
         child: Center (
-          child: Text(dataField,
+          child: Text("Invite from " +data["senderName"],
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.black,
@@ -87,29 +92,30 @@ Widget buildResultCard(dataField, dataObject, context, feature, Function updateF
   );
 }
 
-showAlertDialog(BuildContext context, dataField, dataObject, int feature, Function updateFunc) {
+showAlertDialog(BuildContext context, data) {
   // set up the buttons
-  switch (feature)
+  switch (data['type'])
   {
-    case Constants.add_friend: {
+    case Constants.friend_request: {
       Widget cancelButton = FlatButton(
-        child: Text("Cancel"),
+        child: Text("No"),
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
+          // Remove request from DB
         },
       );
       Widget continueButton = FlatButton(
-        child: Text("Confirm"),
+        child: Text("Yes"),
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
-          DatabaseManagement().addFriend(dataObject['name']);
+          DatabaseManagement().addFriend(data['senderName'],data['senderRef']);
         },
       );
 
       // set up the AlertDialog
       AlertDialog alert = AlertDialog(
-        title: Text("Add Friend"),
-        content: Text("Would you like to add "+dataField+" as your friend?"),
+        title: Text("Friend Request"),
+        content: Text("Would you like to add "+data["senderName"]+" as your friend?"),
         actions: [
           cancelButton,
           continueButton,
@@ -125,22 +131,23 @@ showAlertDialog(BuildContext context, dataField, dataObject, int feature, Functi
       );
         }
     break;
-  case Constants.remove_friend: {
+  case Constants.group_request: {
     Widget cancelButton = FlatButton(
-            child: Text("Cancel"),
+            child: Text("No"),
             onPressed:  () {
               Navigator.of(context).pop(); // dismiss dialog
+              // Remove Request
             },
           );
           Widget continueButton = FlatButton(
-            child: Text("Confirm"),
+            child: Text("Yes"),
             onPressed:  () async {
               Navigator.of(context).pop(); // dismiss dialog
-              DatabaseManagement().removeFriend(dataObject);
+ /*              DatabaseManagement().removeFriend(data);
               if (updateFunc != null)
               {
                 updateFunc();
-              }
+              } */
                 // The content doesn't update when you remove it. This is because when we click on a user in the friend
                 // list, it will open a new page, when we return from that page, thats when we can refresh this.
                 // This is similar to how the list is refreshed when we add a friend.
@@ -149,8 +156,8 @@ showAlertDialog(BuildContext context, dataField, dataObject, int feature, Functi
 
           // set up the AlertDialog
           AlertDialog alert = AlertDialog(
-            title: Text("Remove Friend"),
-            content: Text("Would you like to remove "+dataField+" from your friend list?"),
+            title: Text("Join Group"),
+            content: Text(data["senderName"] + " has invited you to join " + data["groupName"] + ", do you wish to accept?"),
             actions: [
               cancelButton,
               continueButton,
