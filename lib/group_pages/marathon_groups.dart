@@ -91,12 +91,4 @@ updateList()
       print('Leave Group page here');
     }
   }
-
-
-
-class Choice {
-  const Choice({this.title, this.icon});
-
-  final String title;
-  final IconData icon;
 }
