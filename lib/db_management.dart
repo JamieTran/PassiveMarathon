@@ -20,7 +20,7 @@ class DatabaseManagement{
       'searchKey':'M',
       'dob':'',
       'token':'',
-      'friends': [''],
+      'friends': {},
     });
   }
 
@@ -85,14 +85,14 @@ class DatabaseManagement{
     .getDocuments();
   }
 
-  addFriend(addedFriend) { // Add to Adam Array because he is lonely
+  addFriend(addedFriend, friendDocRef) { // Add to Adam Array because he is lonely
     DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
 
     array.get().then((datasnapshot) {
     if (datasnapshot.exists) {
-      List<dynamic> friendArray = datasnapshot.data['friends'].toList();
-      friendArray.add(addedFriend);
-      databaseReference.collection('users').document(dBCodeNameRef).updateData({"friends": FieldValue.arrayUnion(friendArray)});
+      Map<dynamic, dynamic> friendArray = datasnapshot.data['friends'];
+      friendArray[addedFriend] = friendDocRef;
+      databaseReference.collection('users').document(dBCodeNameRef).updateData({"friends": friendArray});
       }
     });
   }
@@ -112,10 +112,8 @@ class DatabaseManagement{
 
     array.get().then((datasnapshot) {
     if (datasnapshot.exists) {
-      List<dynamic> friendArray = datasnapshot.data['friends'].toList();
-      print("removing " + friendName);
-      friendArray.remove(friendName);
-      print("ARRAY ->"+friendArray.toString());
+      Map<dynamic, dynamic> friendArray = datasnapshot.data['friends'];
+      friendArray.removeWhere((key, value) => key == friendName);
       databaseReference.collection('users').document(dBCodeNameRef).updateData({"friends": friendArray});
       }
     });
