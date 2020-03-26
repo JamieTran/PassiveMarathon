@@ -35,8 +35,10 @@ const String create_group = 'Create Group';
 const String add_group = 'Add Group';
 const String leave_group = 'Leave Group';
 
-const int add_friend = 0;
-const int remove_friend = 1;
+const String edit_profile = 'Edit';
+
+const int add_friend =0;
+const int remove_friend=1;
 
 //TODO: will have to change this to marathon login page
 const String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxIiwiaXNzIjoiTWFyYXRob24ifQ.1iZiWav2Ya6-jvQLkzQzoOuGCzjBK56R8pAiqnkF2UU";
