@@ -30,6 +30,8 @@ const String create_group = 'Create Group';
 const String add_group = 'Add Group';
 const String leave_group = 'Leave Group';
 
+const String edit_profile = 'Edit';
+
 const int add_friend =0;
 const int remove_friend=1;
 

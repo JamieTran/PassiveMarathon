@@ -1,23 +1,26 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import '../constants.dart' as Constants;
+import '../mrthn/mrth_api.dart';
 
 // Stateful widgets are used when you need to update the screen
 // with data constantly, this works for passive marathon
 class ProfilePage extends StatelessWidget {
+
+  static const List<String> profile_choices = <String>[
+  'Edit Profile',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Marathon Groups"),
-        backgroundColor: Constants.bright_red,
+        title: Text("Profile"),
+        backgroundColor: Constants.bright_purple,
         actions: <Widget>[
           PopupMenuButton<String>(
               onSelected: choiceAction,
               itemBuilder: (BuildContext context) {
-              return Constants.choices.map((String choice) {
+              return profile_choices.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
@@ -29,11 +32,98 @@ class ProfilePage extends StatelessWidget {
       ),
       backgroundColor: Constants.bright_white,
       body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-            },
-          child: Text('Go back!'),
+        child: ListView(
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 25.0), // spacing
+                Container(
+                  height: 125.0,
+                  width: 125.0,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(62.5),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/images/background1.jpg'))),
+                ),
+                SizedBox(height: 25.0),
+                Text(
+                  'Jamie Tran',
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 4.0),
+                Text(
+                  'Waterloo, ON',
+                  style: TextStyle(fontFamily: 'Montserrat', color: Colors.grey),
+                ),
+                Padding(
+                padding: EdgeInsets.all(30.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          '100',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 5.0),
+                        Text(
+                          'Steps',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.grey),
+                        )
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          '1',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 5.0),
+                        Text(
+                          'GROUPS',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.grey),
+                        )
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          '0',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 5.0),
+                        Text(
+                          'Friends',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.grey),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              ],
+          ),],
         ),
       ),
     );
@@ -41,26 +131,12 @@ class ProfilePage extends StatelessWidget {
   
   void choiceAction(String choice) {
     if (choice == Constants.create_group) {
-      fetchSteps();
+      MrthnAPI.fetchSteps();
     } else if (choice == Constants.add_group) {
       print('Add group page here');
     } else if (choice == Constants.leave_group) {
       print('Leave Group page here');
     }
-  }
-
-  Future<http.Response> fetchSteps() async {
-    // TODO: make user & date dynamic for what is being requested
-    // TODO: also make authentication token private
-    final response = await http.get(
-    'https://marathon-web-api-staging.herokuapp.com/user/1/steps?date=2020-03-15',
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI2IiwiaXNzIjoiTWFyYXRob24ifQ.PY_7DnSqhgvromUG8x7JSUJl2AdA8sR14vFcaz-vtMM"},
-    );
-    print(response);
-    final responseJson = json.decode(response.body);
-
-    print(responseJson);
-
   }
 
 }
