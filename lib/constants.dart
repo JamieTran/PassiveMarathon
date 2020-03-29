@@ -31,9 +31,11 @@ const String add_group = 'Add Group';
 const String leave_group = 'Leave Group';
 
 //TODO: will have to change this to marathon login page
-const String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiI2IiwiaXNzIjoiTWFyYXRob24ifQ.PY_7DnSqhgvromUG8x7JSUJl2AdA8sR14vFcaz-vtMM";
+const String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxIiwiaXNzIjoiTWFyYXRob24ifQ.1iZiWav2Ya6-jvQLkzQzoOuGCzjBK56R8pAiqnkF2UU";
 const String callback = "passivemarathon://";
-const String login_url = "https://marathon-web-api-staging.herokuapp.com/login?service=fitbit&token=" + token + "&callback=" + callback;
+const String login_url = "https://api.mrthn.dev/login?service=fitbit&token=" + token + "&callback=" + callback;
+
+int user_id = 0;
 
 const List<String> choices = <String>[
   create_group,
