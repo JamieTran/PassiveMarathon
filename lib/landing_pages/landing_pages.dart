@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import './page.dart';
 import './dots.dart';
@@ -7,7 +5,6 @@ import './description_box.dart';
 import '../home_pages/home_page.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import '../constants.dart' as Constants;
 import 'package:url_launcher/url_launcher.dart';
 import '../home_pages/home_page.dart';
@@ -44,17 +41,18 @@ class LandingPagesState extends State<LandingPages> {
     final result = await FlutterWebAuth.authenticate(
         url: Constants.login_url, callbackUrlScheme: "passivemarathon");
 
-    final token = Uri.parse(result).queryParameters['id'];
+    final token = Uri.parse(result).queryParameters['userId'];
+    print(token);
 
     switch (int.parse(token)) {
       case 0:
         break;
       default:
-      // TODO: Add saving of user to login constants
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
+      Constants.user_id = int.parse(token);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
     }
   }
 
@@ -83,7 +81,7 @@ class LandingPagesState extends State<LandingPages> {
             ),
             new Positioned(
               bottom: 80,
-              left: 25,
+              left: 120,
               child: ButtonTheme(
                 height: 50,
                 minWidth: 135,
@@ -93,25 +91,6 @@ class LandingPagesState extends State<LandingPages> {
                     this._launchURL();
                   },
                   child: const Text('Sign Up / Log In',
-                      style: TextStyle(fontSize: 20, color: Colors.white)),
-                ),
-              ),
-            ),
-            new Positioned(
-              bottom: 80,
-              right: 25,
-              child: ButtonTheme(
-                height: 50,
-                minWidth: 135,
-                child: RaisedButton(
-                  color: Colors.grey[800].withOpacity(0.5),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
-                    );
-                  },
-                  child: const Text('Continue',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
               ),
