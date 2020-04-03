@@ -21,7 +21,8 @@ void initState() {
 
 //ist<dynamic> friendsArray = new List<dynamic>();
 
-List<String> friendsList = new List<String>();
+//List<String> friendsList = new List<String>();
+Map<String, String> friendsList = new Map<String, String>();
 var friendArray =[];
 
 updateList()
@@ -30,10 +31,18 @@ updateList()
   friendsList.clear();
   DatabaseManagement().getFriendsArray().get().then((datasnapshot) {
     if (datasnapshot.exists) {
-      friendsList = List.from(datasnapshot.data['friends']);
+      friendsList = Map.from(datasnapshot.data['friends']);
+      var list = friendsList.keys.toList();
+      print(friendsList.toString());
+      //setState(() {
+/*         if (friendsList.isNotEmpty)
+        {
+          friendArray.add(friendsList.keys);
+        }
+      }); */
       for (int i=0;i<friendsList.length;i++){
         setState((){
-          friendArray.add(friendsList[i]);
+          friendArray.add(list[i]);
           });      
         }
       print("OUTSIDE FUNCTION ->"+friendArray.toString());
@@ -74,7 +83,7 @@ updateList()
               primary:false,
               shrinkWrap: true,
               children: friendArray.map((element) {
-                return buildResultCard(element, element,context, Constants.remove_friend, updateList);
+                return buildResultCard(element, element,null, context,Constants.remove_friend, updateList);
               }).toList()),
           ],
         )
