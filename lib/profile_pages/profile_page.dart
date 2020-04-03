@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants.dart' as Constants;
+import './edit_profile.dart';
 import '../mrthn/mrth_api.dart';
 
 // Stateful widgets are used when you need to update the screen
@@ -130,12 +131,8 @@ class ProfilePage extends StatelessWidget {
   }
   
   void choiceAction(String choice) {
-    if (choice == Constants.create_group) {
+    if (choice == "Edit Profile") {
       MrthnAPI.fetchSteps();
-    } else if (choice == Constants.add_group) {
-      print('Add group page here');
-    } else if (choice == Constants.leave_group) {
-      print('Leave Group page here');
     }
   }
 
