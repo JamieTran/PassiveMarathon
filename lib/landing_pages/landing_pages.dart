@@ -8,6 +8,7 @@ import 'package:flutter_web_auth/flutter_web_auth.dart';
 import '../constants.dart' as Constants;
 import '../home_pages/home_page.dart';
 import '../db_management.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LandingPages extends StatefulWidget {
   @override
@@ -23,6 +24,8 @@ class LandingPagesState extends State<LandingPages> {
   static const _kDuration = const Duration(milliseconds: 300);
   static const _kCurve = Curves.ease;
   final _kArrowColor = Colors.black.withOpacity(0.8);
+
+  List<dynamic> userData = new List<dynamic>();
 
   // TODO: Move these into constants
   static var landingHeaders = [
@@ -49,8 +52,14 @@ class LandingPagesState extends State<LandingPages> {
         break;
       default:
       Constants.user_id = int.parse(token);
-      var user = DatabaseManagement().checkUser(token);
-      print(user);
+      DatabaseManagement().checkUser(token).then((QuerySnapshot docs) {
+      for (int i=0;i<docs.documents.length;i++){
+        userData.add(docs.documents[i].data);
+       // docIDSet[docs.documents[i].data['name']] = docs.documents[i].documentID;
+        }      
+      });
+
+      //print(user);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
