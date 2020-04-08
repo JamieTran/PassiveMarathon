@@ -28,8 +28,9 @@ var tempSearchStore = [];
 
 List<String> friendsList = new List<String>();
 var friendArray =[];
+var docIDSet = {};
 
-initiateSearch(username) async {
+initiateSearch(username) {
   // If user backspaces, clear arrays
     if (username.length ==0) {
       setState(() {
@@ -38,34 +39,33 @@ initiateSearch(username) async {
 
       friendArray.clear();
       friendsList.clear();
+      docIDSet.clear();
       });
     }
 
   // To Enable Searching, (which doesnt work) Uncomment the following lines
 
-  //var capitalizedValue = username.substring(0,1).toUpperCase() + username.substring(1);
+  var capitalizedValue = username.substring(0,1).toUpperCase() + username.substring(1);
 
-  //if (queryResultSet.length == 0 && username.length == 1) {
-
-      await DatabaseManagement().getFriendsArray().get().then((datasnapshot) {
-        if (datasnapshot.exists) {
-          friendsList = List.from(datasnapshot.data['friends']);
-          for (int i=0;i<friendsList.length;i++){
-            setState((){
-              queryResultSet.add(friendsList[i]);
-              });      
-            }
-          //print("OUTSIDE FUNCTION ->"+friendArray.toString());
-        }
-      });
-    print("FRIEND ARRAY ->" + queryResultSet.toString());
-  //}
-
+  if (queryResultSet.length == 0 && username.length == 1) {
+    DatabaseManagement().queryUsers(username).then((QuerySnapshot docs) {
+      for (int i=0;i<docs.documents.length;i++){
+        queryResultSet.add(docs.documents[i].data);
+        docIDSet[docs.documents[i].data['name']] = docs.documents[i].documentID;
+      }
+    });
+  }
+  else
+  {
     tempSearchStore = [];
     queryResultSet.forEach((element) {
+      if (element['name'].startsWith(capitalizedValue)){
+        setState((){
           tempSearchStore.add(element);
           });
-        print(tempSearchStore.toString());
+        }
+      });
+    }
   }
 
   @override
@@ -151,14 +151,18 @@ showAlertDialog(BuildContext context, groupData, dataObject, int feature, Functi
         child: Text("Confirm"),
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
-          DatabaseManagement().addFriendToGroup(dataObject, groupData);
+          //DatabaseManagement().addFriendToGroup(dataObject, groupData);
+
+          // Should send Invite
+          //DatabaseManagement().sendGroupInvite(groupData, dataObject);
+         // DatabaseManagement().sendFriendInvite(data);
         },
       );
 
       // set up the AlertDialog
       AlertDialog alert = AlertDialog(
         title: Text("Add Friend To Group"),
-        content: Text("Would you like to add "+dataObject+" to your group?"),
+        content: Text("Would you like to send "+dataObject+" an invite to your group?"),
         actions: [
           cancelButton,
           continueButton,

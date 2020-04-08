@@ -137,7 +137,7 @@ showAlertDialog(BuildContext context, dataField, dataObject, dataObjectDoc,int f
           Navigator.of(context).pop(); // dismiss dialog
 
           // This now sends a friend request
-          
+          DatabaseManagement().sendFriendInvite(dataObjectDoc);
 
           //DatabaseManagement().addFriend(dataObject['name']);
         },
