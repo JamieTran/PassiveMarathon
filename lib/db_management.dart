@@ -65,22 +65,26 @@ class DatabaseManagement{
     });
   }
 
-  void getNameFromCode (codeNameRef) async
+  getNameFromCode(codeNameRef)
   {
     DocumentReference doc = databaseReference.collection('users').document(codeNameRef);
-    var name;
-
-    await doc.get().then((datasnapshot) {
+  
+    doc.get().then((datasnapshot) {
     if (datasnapshot.exists) {
-      name = datasnapshot.data['name'].toString();
+      String name = datasnapshot.data['name'];
+      return name;
       }
     });
-
-    return name;
   }
 
   queryUsers(String username) {
     return databaseReference.collection('users')
+    .where('searchKey', isEqualTo: username.substring(0,1).toUpperCase())
+    .getDocuments();
+  }
+
+  queryFriends(String username) {
+        return databaseReference.collection('users')
     .where('searchKey', isEqualTo: username.substring(0,1).toUpperCase())
     .getDocuments();
   }
@@ -97,9 +101,67 @@ class DatabaseManagement{
     });
   }
 
-  sendFriendRequest(receiverName, receiverRef)
+  sendGroupInvite(groupName, recipientRef) async
   {
-    
+    // Need user's name & ref
+    // Send group type invite to invites array
+        // Need user's name & ref
+    DocumentReference nameRef = databaseReference.collection('users').document(dBCodeNameRef);
+    String name;
+
+    await nameRef.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      name = datasnapshot.data['name'];
+      }
+    });
+
+    DocumentReference doc = databaseReference.collection('users').document(recipientRef);
+    // Place the invite in the user's invite array
+    doc.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      List<dynamic> invitesArray = datasnapshot.data['invites'];
+      invitesArray.add({"groupName":groupName,"senderName":name,"senderRef":dBCodeNameRef,"type":"Group Request"});
+      databaseReference.collection('users').document(recipientRef).updateData({"invites": invitesArray});
+      }
+    });
+  }
+
+  sendFriendInvite(recipientRef) async
+  {
+    // Need user's name & ref
+    DocumentReference nameRef = databaseReference.collection('users').document(dBCodeNameRef);
+    String name;
+
+    await nameRef.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      name = datasnapshot.data['name'];
+      }
+    });
+
+    DocumentReference doc = databaseReference.collection('users').document(recipientRef);
+    // Place the invite in the user's invite array
+    doc.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      List<dynamic> invitesArray = datasnapshot.data['invites'];
+      invitesArray.add({"groupName":null,"senderName":name,"senderRef":dBCodeNameRef,"type":"Friend Request"});
+      databaseReference.collection('users').document(recipientRef).updateData({"invites": invitesArray});
+      }
+    });
+  }
+
+  removeInvite(data)
+  {
+    DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
+
+    array.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      List<dynamic> invitesArray = datasnapshot.data['invites'];
+        for(Map item in invitesArray){
+          if ((item['senderRef'] == data['senderRef']) && (item['type'] == data['type'])){
+            invitesArray.remove(item);
+          databaseReference.collection('users').document(dBCodeNameRef).updateData({"invites": invitesArray});
+      }}}
+    });
   }
 
   getGroupStreamSnapShot(documentRef)
@@ -133,23 +195,39 @@ class DatabaseManagement{
     return databaseReference.collection('users').document(dBCodeNameRef);
   }
 
-  removeRequest(object) {
+  addUserToGroup(groupData) {
 
-  }
+    DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
+    String name;
 
-  addFriendToGroup(objectData, groupData) {
+    doc.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      name = datasnapshot.data['name'];
+      }
+    });
+
     // Add friend to group array
     DocumentReference array =  databaseReference.collection('groups').document(groupData);
 
     array.get().then((datasnapshot) {
     if (datasnapshot.exists) {
       List<dynamic> memberArray = datasnapshot.data['membersInfo'].toList();
-      memberArray.add({"name":objectData,"distance":0,"reference":"subForActualVal"});
+      memberArray.add({"name":name,"distance":0,"reference":dBCodeNameRef});
       databaseReference.collection('groups').document(groupData).updateData({"membersInfo": FieldValue.arrayUnion(memberArray)});
       }
     });
 
     // Add group to friend's group array
+
+    DocumentReference friendArray =  databaseReference.collection('users').document(dBCodeNameRef);
+
+    friendArray.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      List<dynamic> groupArray = datasnapshot.data['groups'].toList();
+      groupArray.add(groupData);
+      databaseReference.collection('users').document(dBCodeNameRef).updateData({"groups": FieldValue.arrayUnion(groupArray)});
+      }
+    });
 
     // NOTE * NEED TO CONTINUE FROM HERE BECAUSE FRIENDS HAVE TO BE REDONE
     // STORE DBREF WITH FRIENDS ARRAY 
