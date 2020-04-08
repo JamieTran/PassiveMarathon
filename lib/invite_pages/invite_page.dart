@@ -78,7 +78,7 @@ Widget buildResultCard(data, context) {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0)),
       elevation: 2.0,
-      child: Container(
+      child: Container(  
         child: Center (
           child: Text("Invite from " +data["senderName"],
           textAlign: TextAlign.center,
@@ -101,14 +101,19 @@ showAlertDialog(BuildContext context, data) {
         child: Text("No"),
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
-          // Remove request from DB
+          // Remove request from invites
+          DatabaseManagement().removeInvite(data);
         },
       );
       Widget continueButton = FlatButton(
         child: Text("Yes"),
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
+          // Add Friend
           DatabaseManagement().addFriend(data['senderName'],data['senderRef']);
+          // Remove request from invites
+          DatabaseManagement().removeInvite(data);
+
         },
       );
 
@@ -137,20 +142,17 @@ showAlertDialog(BuildContext context, data) {
             onPressed:  () {
               Navigator.of(context).pop(); // dismiss dialog
               // Remove Request
+              DatabaseManagement().removeInvite(data);
             },
           );
           Widget continueButton = FlatButton(
             child: Text("Yes"),
             onPressed:  () async {
               Navigator.of(context).pop(); // dismiss dialog
- /*              DatabaseManagement().removeFriend(data);
-              if (updateFunc != null)
-              {
-                updateFunc();
-              } */
-                // The content doesn't update when you remove it. This is because when we click on a user in the friend
-                // list, it will open a new page, when we return from that page, thats when we can refresh this.
-                // This is similar to how the list is refreshed when we add a friend.
+              // Add user to group and add the group to the users array
+              DatabaseManagement().addUserToGroup(data["groupName"]); 
+              // Remove Request
+              DatabaseManagement().removeInvite(data);
             },
           );
 
