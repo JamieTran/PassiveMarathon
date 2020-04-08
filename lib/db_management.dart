@@ -165,5 +165,10 @@ class DatabaseManagement{
   });
   }
 
-  
+  checkUser(String userID)
+  {
+    return databaseReference.collection('users')
+    .where('token', isEqualTo: userID)
+    .getDocuments();
+  }
 }

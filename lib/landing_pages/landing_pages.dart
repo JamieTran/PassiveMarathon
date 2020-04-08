@@ -6,8 +6,8 @@ import '../home_pages/home_page.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import '../constants.dart' as Constants;
-import 'package:url_launcher/url_launcher.dart';
 import '../home_pages/home_page.dart';
+import '../db_management.dart';
 
 class LandingPages extends StatefulWidget {
   @override
@@ -49,6 +49,8 @@ class LandingPagesState extends State<LandingPages> {
         break;
       default:
       Constants.user_id = int.parse(token);
+      var user = DatabaseManagement().checkUser(token);
+      print(user);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
