@@ -63,14 +63,9 @@ updateList()
       friendsList = Map.from(datasnapshot.data['friends']);
          friendsList.forEach((k,v) => 
           setState(() {
-          //friendArray = friendsList.keys.toList();
-          //refArray = friendsList.values.toList();
             list.add({k:v});
           }));
-/*       for (int i=0;i<friendsList.length;i++){
-          friendArray.add(friendsList[i]);
-        } */
-         
+
       print("OUTSIDE FUNCTION Friends->"+refArray.toString());
     }
   });
@@ -142,7 +137,7 @@ showAlertDialog(BuildContext context, groupData, dataObjectKey, dataObjectValue,
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
 
-          // Send Invite                    //groupData = group name, dataObject   = name
+          // Send Invite 
           DatabaseManagement().sendGroupInvite(groupData, dataObjectValue);
         },
       );

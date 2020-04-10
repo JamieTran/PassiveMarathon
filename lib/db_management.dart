@@ -103,7 +103,6 @@ class DatabaseManagement{
 
   sendGroupInvite(groupName, recipientRef) async
   {
-    // Need user's name & ref
     // Send group type invite to invites array
     DocumentReference nameRef = databaseReference.collection('users').document(dBCodeNameRef);
     String name;
