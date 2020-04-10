@@ -18,55 +18,63 @@ class AddMember extends StatefulWidget{
     
 class _AddMemberState extends State<AddMember>{
 
+  @override
+  void initState() {
+  super.initState();
+  updateList();
+  }
+
   var groupData;
 
   _AddMemberState(this.groupData);
 
-var queryResultSet = [];
-//List<String> queryResultSet;
-var tempSearchStore = [];
-
-List<String> friendsList = new List<String>();
+Map<String, String> friendsList = new Map<String, String>();
+List<Map<String, String>> list = new List<Map<String, String>>();
 var friendArray =[];
+var refArray= [];
 var docIDSet = {};
 
-initiateSearch(username) {
-  // If user backspaces, clear arrays
-    if (username.length ==0) {
-      setState(() {
-      queryResultSet = [];
-      tempSearchStore = [];
+getMapContent(Map list, String object)
+{
+  var value = list.values.toList();
+  var key = list.keys.toList();
+  String result;
 
-      friendArray.clear();
-      friendsList.clear();
-      docIDSet.clear();
-      });
-    }
-
-  // To Enable Searching, (which doesnt work) Uncomment the following lines
-
-  var capitalizedValue = username.substring(0,1).toUpperCase() + username.substring(1);
-
-  if (queryResultSet.length == 0 && username.length == 1) {
-    DatabaseManagement().queryUsers(username).then((QuerySnapshot docs) {
-      for (int i=0;i<docs.documents.length;i++){
-        queryResultSet.add(docs.documents[i].data);
-        docIDSet[docs.documents[i].data['name']] = docs.documents[i].documentID;
-      }
-    });
-  }
-  else
+  switch (object)
   {
-    tempSearchStore = [];
-    queryResultSet.forEach((element) {
-      if (element['name'].startsWith(capitalizedValue)){
-        setState((){
-          tempSearchStore.add(element);
-          });
-        }
-      });
-    }
+    case 'key':
+      result = key[0];
+    break;
+    case 'value':
+      result = value[0];
+    break;
   }
+
+  return result;
+}
+
+updateList()
+{
+  friendArray.clear();
+  refArray.clear();
+  friendsList.clear(); 
+  DatabaseManagement().getFriendsArray().get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      friendsList = Map.from(datasnapshot.data['friends']);
+         friendsList.forEach((k,v) => 
+          setState(() {
+          //friendArray = friendsList.keys.toList();
+          //refArray = friendsList.values.toList();
+            list.add({k:v});
+          }));
+/*       for (int i=0;i<friendsList.length;i++){
+          friendArray.add(friendsList[i]);
+        } */
+         
+      print("OUTSIDE FUNCTION Friends->"+refArray.toString());
+    }
+  });
+}
 
   @override
     Widget build(BuildContext context) {
@@ -78,25 +86,6 @@ initiateSearch(username) {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                onChanged: (val) {
-                  initiateSearch(val);
-                },
-                decoration: InputDecoration(
-                  prefixIcon: IconButton(
-                    color: Colors.black,
-                    icon: Icon(Icons.arrow_back),
-                    iconSize:20.0,
-                    onPressed:() {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  contentPadding: EdgeInsets.only(left:25.0),
-                  hintText: 'Search for name',
-                  border:OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0))
-                ),
-              ),
             ),
             SizedBox(height:10.0),
             GridView.count(
@@ -106,25 +95,26 @@ initiateSearch(username) {
               mainAxisSpacing: 4.0,
               primary:false,
               shrinkWrap: true,
-              children: tempSearchStore.map((element) {
-                return buildResultCard(groupData,element, context, Constants.add_friend_to_group,null);
-              }).toList()),
-         ],
+              children:
+                  list.map((element) {
+                  return buildResultCard(groupData,getMapContent(element, "key"),getMapContent(element, "value") ,context, Constants.add_friend_to_group,null);
+                  }).toList(),
+            )],
         )
       );
   }
 }
 
-Widget buildResultCard(groupData, dataObject, context, feature, Function updateFunc) {
+Widget buildResultCard(groupData, dataObjectKey, dataObjectValue, context, feature, Function updateFunc) {
   return new GestureDetector(
-  onTap: ()=> showAlertDialog(context, groupData, dataObject, feature, updateFunc),
+  onTap: ()=> showAlertDialog(context, groupData, dataObjectKey, dataObjectValue, feature, updateFunc),
   child: new Card(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0)),
       elevation: 2.0,
       child: Container(
         child: Center (
-          child: Text(dataObject,
+          child: Text(dataObjectKey,
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.black,
@@ -136,7 +126,7 @@ Widget buildResultCard(groupData, dataObject, context, feature, Function updateF
   );
 }
 
-showAlertDialog(BuildContext context, groupData, dataObject, int feature, Function updateFunc) {
+showAlertDialog(BuildContext context, groupData, dataObjectKey, dataObjectValue, int feature, Function updateFunc) {
   // set up the buttons
   switch (feature)
   {
@@ -151,18 +141,16 @@ showAlertDialog(BuildContext context, groupData, dataObject, int feature, Functi
         child: Text("Confirm"),
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
-          //DatabaseManagement().addFriendToGroup(dataObject, groupData);
 
-          // Should send Invite
-          //DatabaseManagement().sendGroupInvite(groupData, dataObject);
-         // DatabaseManagement().sendFriendInvite(data);
+          // Send Invite                    //groupData = group name, dataObject   = name
+          DatabaseManagement().sendGroupInvite(groupData, dataObjectValue);
         },
       );
 
       // set up the AlertDialog
       AlertDialog alert = AlertDialog(
         title: Text("Add Friend To Group"),
-        content: Text("Would you like to send "+dataObject+" an invite to your group?"),
+        content: Text("Would you like to send "+dataObjectKey+" an invite to your group?"),
         actions: [
           cancelButton,
           continueButton,

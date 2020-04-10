@@ -105,7 +105,6 @@ class DatabaseManagement{
   {
     // Need user's name & ref
     // Send group type invite to invites array
-        // Need user's name & ref
     DocumentReference nameRef = databaseReference.collection('users').document(dBCodeNameRef);
     String name;
 
