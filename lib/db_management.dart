@@ -46,12 +46,7 @@ class DatabaseManagement{
     .setData({
       'groupName':groupName,
       'groupDistance':groupDistance,
-      'membersInfo':[{"name":name,"distance":32,"reference":dBCodeNameRef},
-                     {"name":"Mateus Gurgel","distance":28,"reference":dbCodeMateusRef},
-                     {"name":"Ed Barsalou","distance":20, "reference":dbEdRef},
-                     {"name":"Russ Foubert","distance":16, "reference":dbRussRef},
-                     {"name":"Manuel Poppe Richter","distance":13,"reference":dbCodeMannyRef},
-                     {"name":"Jamie Tran","distance":10,"reference":dbJamieRef}]
+      'membersInfo':[{"name":name,"distance":0,"reference":dBCodeNameRef}]
     });
 
     DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
