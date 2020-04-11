@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:passive_marathon/invite_pages/invite_page.dart';
-import 'package:passive_marathon/profile/profile_page.dart';
+import '../profile_pages/profile_page.dart';
 import 'package:passive_marathon/settings_page.dart';
 import '../group_pages/marathon_groups.dart';
 import '../friend_pages/friend_management.dart';

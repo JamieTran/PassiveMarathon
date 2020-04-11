@@ -41,9 +41,14 @@ const int join_group=2;
 
 const String friend_request= 'Friend Request';
 const String group_request= 'Group Request';
+const String edit_profile = 'Edit';
 
 //TODO: will have to change this to marathon login page
-const String login_url = "https://marathon-18119.firebaseapp.com/";
+const String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxIiwiaXNzIjoiTWFyYXRob24ifQ.1iZiWav2Ya6-jvQLkzQzoOuGCzjBK56R8pAiqnkF2UU";
+const String callback = "passivemarathon://";
+const String login_url = "https://api.mrthn.dev/login?service=fitbit&token=" + token + "&callback=" + callback;
+
+int user_id = 0;
 
 const List<String> choices = <String>[
   create_group,

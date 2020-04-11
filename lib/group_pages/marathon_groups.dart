@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:passive_marathon/db_management.dart';
 import '../constants.dart' as Constants;
 import './create_group.dart';
 import '../db_management.dart';
