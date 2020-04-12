@@ -24,6 +24,11 @@ class DatabaseManagement{
     });
   }
 
+  getUserRef()
+  {
+    return dBCodeNameRef;
+  }
+
   void getGroupName()
   {
     DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
