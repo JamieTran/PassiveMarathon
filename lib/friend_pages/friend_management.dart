@@ -52,16 +52,47 @@ class FriendsManagement extends State<FriendScreen> {
                   itemCount: snapshot.data['friends'].length,
                   itemBuilder: (_, int index) {
                     String key = snapshot.data['friends'].keys.elementAt(index);
-                      return Card(
-                        child: ListTile(
-                          onTap: () async {
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ProfilePage()));
-                              },
-                          leading: Icon(Icons.account_circle),
-                          title: Text('$key'),
-                        ),
+                    String value = snapshot.data['friends'].values.elementAt(index);
+                      return Dismissible(
+                        background: Container(color: Colors.red),
+                        confirmDismiss: (DismissDirection direction) async {
+                          final bool res = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Confirm"),
+                                content: const Text("Are you sure you wish to delete this friend?"),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    onPressed: () => {
+                                      print(value),
+                                      DatabaseManagement().removeFriend(value),
+                                      Navigator.of(context).pop(true)
+                                      },
+                                    child: const Text("DELETE")
+                                  ),
+                                  FlatButton(
+                                    onPressed: () => Navigator.of(context).pop(false),
+                                    child: const Text("CANCEL"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          return res;
+                        },
+                        key: Key(key),
+                        child: new Card(
+                          child: ListTile(
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ProfilePage()));
+                                },
+                            leading: Icon(Icons.account_circle),
+                            title: Text('$key'),
+                          ),
+                      ), 
                     );
                   }
                 );     
