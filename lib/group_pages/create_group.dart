@@ -67,26 +67,16 @@ class _CreateGroupState extends State{
   }
 }
 
-Widget buildResultCard(dataField, dataObject, context, feature, Function updateFunc) {
+Widget buildGroupRedirectCard(groupName, context) {
   return new GestureDetector(
   onTap: ()=> Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => GroupScreen(dataObject)),
+    MaterialPageRoute(builder: (context) => GroupScreen(groupName)),
     ),
-  child: new Card(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0)),
-      elevation: 2.0,
-      child: Container(
-        child: Center (
-          child: Text(dataField,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20.0,
-          )),
-        )
-      ),
-    )
-  );
+      child: new Card(
+        child: ListTile(
+          leading: Icon(Icons.flag),
+          title: Text(groupName),
+        ),
+      ));
 }
