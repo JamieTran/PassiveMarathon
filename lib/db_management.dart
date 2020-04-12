@@ -29,6 +29,11 @@ class DatabaseManagement{
     return dBCodeNameRef;
   }
 
+  getGroupRef(groupName)
+  {
+    return databaseReference.collection('groups').document(groupName);
+  }
+
   void getGroupName()
   {
     DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
@@ -51,6 +56,7 @@ class DatabaseManagement{
     .setData({
       'groupName':groupName,
       'groupDistance':groupDistance,
+      'admin':dBCodeNameRef,
       'membersInfo':[{"name":name,"distance":0,"reference":dBCodeNameRef}]
     });
 
@@ -61,6 +67,66 @@ class DatabaseManagement{
       List<dynamic> groupArray = datasnapshot.data['groups'].toList();
       groupArray.add(groupName);
       databaseReference.collection('users').document(dBCodeNameRef).updateData({"groups": FieldValue.arrayUnion(groupArray)});
+      }
+    });
+  }
+
+  leaveGroup(groupName)
+  {
+    // Get Members Info
+    DocumentReference groupRef = databaseReference.collection('groups').document(groupName);
+
+    groupRef.get().then((datasnapshot) async {
+    if (datasnapshot.exists) {
+      List<dynamic> memberArray = datasnapshot.data['membersInfo'].toList();
+      
+        for (Map item in memberArray)
+        {
+          if (item['reference'] == dBCodeNameRef) // its the user
+          {
+            
+            DocumentReference userData = databaseReference.collection('users').document(item['reference']);
+
+            // Access user group array and from reference to that group
+            await userData.get().then((datasnapshot) {
+            if (datasnapshot.exists) {
+              List<dynamic> groupArray = datasnapshot.data['groups'].toList();
+              groupArray.remove(groupName);
+              databaseReference.collection('users').document(item['reference']).updateData({"groups": groupArray});
+              }
+            });
+              // remove from list
+              memberArray.remove(item);
+          }
+        }
+      }
+    });
+  }
+
+  deleteGroup(groupName)
+  {
+    // Get Members Info
+    DocumentReference groupRef = databaseReference.collection('groups').document(groupName);
+
+    groupRef.get().then((datasnapshot) async {
+    if (datasnapshot.exists) {
+      List<dynamic> memberArray = datasnapshot.data['membersInfo'].toList();
+      
+        for (Map item in memberArray)
+        {
+          DocumentReference userData = databaseReference.collection('users').document(item['reference']);
+
+          // Access each user's group array and from reference to that group
+          await userData.get().then((datasnapshot) {
+          if (datasnapshot.exists) {
+            List<dynamic> groupArray = datasnapshot.data['groups'].toList();
+            groupArray.remove(groupName);
+            databaseReference.collection('users').document(item['reference']).updateData({"groups": groupArray});
+            }
+          });
+        }
+        // Delete Group Document
+        databaseReference.collection('groups').document(groupName).delete();
       }
     });
   }
