@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../constants.dart' as Constants;
 import './create_group.dart';
 import '../db_management.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:passive_marathon/db_management.dart';
 
 // Stateful widgets are used when you need to update the screen
 // with data constantly, this works for passive marathon
@@ -12,67 +14,49 @@ class GroupsScreen extends StatefulWidget {
 
 class MarathonGroups extends State<GroupsScreen> {
 
-  @override
-  void initState() {
-  super.initState();
-  updateList();
-  }
-
-List<String> groupsList = new List<String>();
-var groupArray =[];
-
-updateList()
-{
-  print("updateList called");
-  groupArray.clear();
-  groupsList.clear();
-  DatabaseManagement().getGroupsArray().get().then((datasnapshot) {
-    if (datasnapshot.exists) {
-      groupsList = List.from(datasnapshot.data['groups']);
-      for (int i=0;i<groupsList.length;i++){
-        setState((){
-          groupArray.add(groupsList[i]);
-          });      
-        }
-      print("OUTSIDE FUNCTION ->"+groupArray.toString());
-    }
-  });
-}
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Marathon Groups"),
         backgroundColor: Constants.bright_red,
         actions: <Widget>[
-          PopupMenuButton<String>(
-              onSelected: (choice) => onItemMenuPress(choice, context),
-              itemBuilder: (BuildContext context) {
-              return Constants.choices.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
+            // action button
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () async {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CreateGroup();
+                  });
               },
             ),
-          ],
+        ],
       ),
       backgroundColor: Constants.bright_white,
-      body: ListView(
-          children: <Widget>[
-            SizedBox(height:10.0),
-            GridView.count(
-              padding: EdgeInsets.only(left:10.0, right:10.0),
-              crossAxisCount: 2,
-              crossAxisSpacing: 4.0,
-              mainAxisSpacing: 4.0,
-              primary:false,
-              shrinkWrap: true,
-              children: groupArray.map((element) {
-                return buildResultCard(element, element,context, null, updateList);
-              }).toList()),
-          ],
+      body: 
+        StreamBuilder<DocumentSnapshot>(
+          stream: Firestore.instance.collection('users').document(DatabaseManagement().getUserRef()).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot)
+          {
+            if (snapshot.hasError) {
+              return Text ('Error: ${snapshot.error}');
+            }
+            switch (snapshot.connectionState)
+            {
+              case ConnectionState.waiting:
+                return Text ('Loading...');
+              default:
+                return ListView.builder(
+                  padding: EdgeInsets.all(8.0),
+                  itemCount: snapshot.data['groups'].length,
+                  itemBuilder: (_, int index) {
+                    String groupName = snapshot.data['groups'].elementAt(index);
+                      return buildGroupRedirectCard(groupName, _);
+                  }
+                );     
+            }
+          },
         )
     );
   }
