@@ -4,6 +4,7 @@ import 'package:passive_marathon/db_management.dart';
 import 'package:passive_marathon/friend_pages/friend_add_page.dart';
 import '../constants.dart' as Constants;
 import 'friend_add_page.dart';
+import '../profile_pages/profile_page.dart';
 
 // Stateful widgets are used when you need to update the screen
 // with data constantly, this works for passive marathon
@@ -52,11 +53,15 @@ class FriendsManagement extends State<FriendScreen> {
                   itemBuilder: (_, int index) {
                     String key = snapshot.data['friends'].keys.elementAt(index);
                       return Card(
-                                  child: ListTile(
-                                    onTap: null,    // REDIRECT TO USER PROFILE HERE, I didn't test it but it should work, I hope
-                                    leading: Icon(Icons.account_circle),
-                                    title: Text('$key'),
-                                  ),
+                        child: ListTile(
+                          onTap: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ProfilePage()));
+                              },
+                          leading: Icon(Icons.account_circle),
+                          title: Text('$key'),
+                        ),
                     );
                   }
                 );     
