@@ -24,6 +24,11 @@ class DatabaseManagement{
     });
   }
 
+  getUserRef()
+  {
+    return dBCodeNameRef;
+  }
+
   void getGroupName()
   {
     DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
@@ -32,7 +37,6 @@ class DatabaseManagement{
 
   void createGroup(String groupName, groupDistance) async
   {
-
     DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
     var name;
 
@@ -44,6 +48,7 @@ class DatabaseManagement{
 
     await databaseReference.collection("groups").document(groupName)
     .setData({
+      'admin':dBCodeNameRef,
       'groupName':groupName,
       'groupDistance':groupDistance,
       'membersInfo':[{"name":name,"distance":0,"reference":dBCodeNameRef}]
