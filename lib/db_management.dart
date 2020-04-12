@@ -24,6 +24,10 @@ class DatabaseManagement{
     });
   }
 
+  void editUser(String id, String name){
+    // TODO: working on edit user
+  }
+
   void getGroupName()
   {
     DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
@@ -171,4 +175,5 @@ class DatabaseManagement{
     .where('token', isEqualTo: userID)
     .getDocuments();
   }
+
 }

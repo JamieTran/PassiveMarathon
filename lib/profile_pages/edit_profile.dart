@@ -10,7 +10,9 @@ class EditProfile extends StatefulWidget{
 
 class _EditProfileState extends State{
 
-  TextEditingController groupName = TextEditingController();
+  TextEditingController userName = TextEditingController();
+  TextEditingController userLocation = TextEditingController();
+
   double _value = 42;
 
   @override
@@ -21,26 +23,15 @@ class _EditProfileState extends State{
           child: Column( 
             children: <Widget> [
               TextField(
-                controller: groupName,
-                decoration: InputDecoration(hintText: "Name of Group"),
+                controller: userName,
+                decoration: InputDecoration(hintText: "Name"),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 16.0),
-                child: Text("Distance"),
-              ),
-              Slider(
-                value: _value.toDouble(),
-                min: 0.1,
-                max: 42,
-                divisions: 420,
-                activeColor: Colors.red,
-                inactiveColor: Colors.black,
-                label: _value.toStringAsFixed(1) + " kms",
-                onChanged: (double newValue) {
-                  setState(() {
-                    _value = newValue;
-                  });
-                },
+                child: TextField(
+                controller: userLocation,
+                decoration: InputDecoration(hintText: "Location"),
+                ),
               ),
             ],
           ),

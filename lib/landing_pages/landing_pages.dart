@@ -53,13 +53,16 @@ class LandingPagesState extends State<LandingPages> {
       default:
       Constants.user_id = int.parse(token);
       DatabaseManagement().checkUser(token).then((QuerySnapshot docs) {
-      for (int i=0;i<docs.documents.length;i++){
-        userData.add(docs.documents[i].data);
-       // docIDSet[docs.documents[i].data['name']] = docs.documents[i].documentID;
-        }      
+        for (int i=0;i<docs.documents.length;i++){
+          userData.add(docs.documents[i].data);
+        }
+        if (userData.length <= 0)
+        {
+          // TODO: take them through settup account
+        }
+        Constants.user_name = userData[0]["name"];
       });
 
-      //print(user);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),

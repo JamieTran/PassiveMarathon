@@ -44,7 +44,10 @@ const String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxIiwiaXNzI
 const String callback = "passivemarathon://";
 const String login_url = "https://api.mrthn.dev/login?service=fitbit&token=" + token;
 
+// USER/Profile Data
+
 int user_id = 0;
+String user_name = "";
 
 const List<String> choices = <String>[
   create_group,
