@@ -172,14 +172,27 @@ class DatabaseManagement{
     return databaseReference.collection('users').document(dBCodeNameRef);
   }
 
-  removeFriend(friendName) {
-    DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
+  removeFriend(friendName, friendRef) {
+    DocumentReference userFriendArray = databaseReference.collection('users').document(dBCodeNameRef);
 
-    array.get().then((datasnapshot) {
+    // First, remove the friend from your friend array
+    userFriendArray.get().then((datasnapshot) {
     if (datasnapshot.exists) {
       Map<dynamic, dynamic> friendArray = datasnapshot.data['friends'];
-      friendArray.removeWhere((key, value) => key == friendName);
+      friendArray.removeWhere((key, value) => value == friendRef);  // NEED TO TEST
       databaseReference.collection('users').document(dBCodeNameRef).updateData({"friends": friendArray});
+      }
+    });
+
+    // Next, remove your name from their friend array
+    DocumentReference otherFriendArray = databaseReference.collection('users').document(friendRef);
+
+    // First, remove the friend from your friend array
+    otherFriendArray.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      Map<dynamic, dynamic> friendArray = datasnapshot.data['friends'];
+      friendArray.removeWhere((key, value) => value == dBCodeNameRef);
+      databaseReference.collection('users').document(friendRef).updateData({"friends": friendArray});
       }
     });
   }
