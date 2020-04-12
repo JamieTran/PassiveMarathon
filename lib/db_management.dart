@@ -24,8 +24,15 @@ class DatabaseManagement{
     });
   }
 
-  void editUser(String id, String name){
+  void editUser(String name){
     // TODO: working on edit user
+    DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
+
+    doc.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      databaseReference.collection('users').document(dBCodeNameRef).updateData({"name": name});
+      }
+    });
   }
 
   void getGroupName()
