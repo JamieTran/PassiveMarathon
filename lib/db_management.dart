@@ -71,6 +71,27 @@ class DatabaseManagement{
     });
   }
 
+  restartGroup(groupName)
+  {
+    // Get Members Info
+    DocumentReference groupRef = databaseReference.collection('groups').document(groupName);
+
+    groupRef.get().then((datasnapshot) async {
+    if (datasnapshot.exists) {
+      List<dynamic> memberArray = datasnapshot.data['membersInfo'].toList();
+      
+        for (Map item in memberArray) // Reset distance in group array
+        {
+          item['distance'] = 0;
+        }
+
+          // Update Data
+        databaseReference.collection('groups').document(groupName).updateData({"membersInfo": memberArray});
+        
+      }
+    });
+  }
+
   leaveGroup(groupName, userRef)
   {
     var userDbRef;
