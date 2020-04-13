@@ -22,10 +22,6 @@ class DatabaseManagement{
       });
 
       dBCodeNameRef = docRef.documentID;
-
-      DocumentReference docRef = await 
-      Firestore.instance.collection('gameLevels').add(map);
-      print(docRef.documentID);
   }
 
   void editUser(String name){
