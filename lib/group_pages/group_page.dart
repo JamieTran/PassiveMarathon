@@ -171,6 +171,42 @@ showAlertDialog(BuildContext context, groupName, int feature) {
   switch (feature)
   {
     // Delete the group option
+    case Constants.restart_group: {   
+      Widget cancelButton = FlatButton(
+        child: Text("Cancel"),
+        onPressed:  () {
+          Navigator.of(context).pop(); // dismiss dialog
+        },
+      );
+      Widget continueButton = FlatButton(
+        child: Text("Confirm"),
+        onPressed:  () {
+          Navigator.of(context).pop(); // dismiss dialog
+          // Restart Race here
+          Navigator.of(context).pop(); // return to previous screen
+        },
+      );
+
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: Text("Restart Marathon"),
+        content: Text("This following action will restart the race, do you wish to continue?"),
+        actions: [
+          cancelButton,
+          continueButton,
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+        }
+    break;
+    // Delete the group option
     case Constants.delete_group: {   
       Widget cancelButton = FlatButton(
         child: Text("Cancel"),
