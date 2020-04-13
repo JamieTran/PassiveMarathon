@@ -33,7 +33,7 @@ class HomePageState extends State<HomePage>{
         children: <Widget>[
           new NavButton(Constants.bright_red, Constants.bright_white, Constants.bright_white, "Marathons", Icons.directions_run, MaterialPageRoute(builder: (context) => GroupsScreen())),
           new NavButton(Constants.bright_blue, Constants.bright_white, Constants.bright_white, "Friends", Icons.group,MaterialPageRoute(builder: (context) => FriendScreen())),
-          new NavButton(Constants.bright_purple, Constants.bright_white, Constants.bright_white, "Profile", Icons.account_circle ,MaterialPageRoute(builder: (context) => null)),
+          new NavButton(Constants.bright_purple, Constants.bright_white, Constants.bright_white, "Profile", Icons.account_circle ,MaterialPageRoute(builder: (context) => ProfilePage())),
           new NavButton(Constants.bright_yellow, Constants.bright_white, Constants.bright_white, "Settings", Icons.settings ,MaterialPageRoute(builder: (context) => SettingsPage())),
           new NavButton(Constants.bright_blue, Constants.bright_white, Constants.bright_white, "Invites", Icons.mail_outline ,MaterialPageRoute(builder: (context) => InviteScreen())),
         ],

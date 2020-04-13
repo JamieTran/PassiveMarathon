@@ -24,6 +24,11 @@ class DatabaseManagement{
     });
   }
 
+  getUserRef()
+  {
+    return dBCodeNameRef;
+  }
+
   void getGroupName()
   {
     DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
@@ -32,7 +37,6 @@ class DatabaseManagement{
 
   void createGroup(String groupName, groupDistance) async
   {
-
     DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
     var name;
 
@@ -44,6 +48,7 @@ class DatabaseManagement{
 
     await databaseReference.collection("groups").document(groupName)
     .setData({
+      'admin':dBCodeNameRef,
       'groupName':groupName,
       'groupDistance':groupDistance,
       'membersInfo':[{"name":name,"distance":0,"reference":dBCodeNameRef}]
@@ -167,14 +172,26 @@ class DatabaseManagement{
     return databaseReference.collection('users').document(dBCodeNameRef);
   }
 
-  removeFriend(friendName) {
-    DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
+  removeFriend(friendRef) {
+    DocumentReference userFriendArray = databaseReference.collection('users').document(dBCodeNameRef);
 
-    array.get().then((datasnapshot) {
+    // First, remove the friend from your friend array
+    userFriendArray.get().then((datasnapshot) {
     if (datasnapshot.exists) {
       Map<dynamic, dynamic> friendArray = datasnapshot.data['friends'];
-      friendArray.removeWhere((key, value) => key == friendName);
+      friendArray.removeWhere((key, value) => value == friendRef);  // NEED TO TEST
       databaseReference.collection('users').document(dBCodeNameRef).updateData({"friends": friendArray});
+      }
+    });
+
+    DocumentReference otherFriendArray = databaseReference.collection('users').document(friendRef);
+
+    // Next, remove your name from their friend array
+    otherFriendArray.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      Map<dynamic, dynamic> friendArray = datasnapshot.data['friends'];
+      friendArray.removeWhere((key, value) => value == dBCodeNameRef);
+      databaseReference.collection('users').document(friendRef).updateData({"friends": friendArray});
       }
     });
   }
