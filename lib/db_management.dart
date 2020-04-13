@@ -71,8 +71,18 @@ class DatabaseManagement{
     });
   }
 
-  leaveGroup(groupName)
+  leaveGroup(groupName, userRef)
   {
+    var userDbRef;
+
+    if (userRef != null)
+    {
+      userDbRef = userRef;
+    }
+    else
+    {
+      userDbRef = dBCodeNameRef;
+    }
     // Get Members Info
     DocumentReference groupRef = databaseReference.collection('groups').document(groupName);
 
@@ -82,7 +92,7 @@ class DatabaseManagement{
       
         for (Map item in memberArray)
         {
-          if (item['reference'] == dBCodeNameRef) // its the user
+          if (item['reference'] == userDbRef) // its the user
           {
             
             DocumentReference userData = databaseReference.collection('users').document(item['reference']);
@@ -97,6 +107,9 @@ class DatabaseManagement{
             });
               // remove from list
               memberArray.remove(item);
+
+              // Update Data
+              databaseReference.collection('groups').document(groupName).updateData({"membersInfo": memberArray});
           }
         }
       }
