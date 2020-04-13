@@ -219,8 +219,10 @@ showAlertDialog(BuildContext context, groupName, int feature) {
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
 
-          // Leave Group Here
-          DatabaseManagement().leaveGroup(groupName);
+          // Leave Group Here, null = current user leaves
+          DatabaseManagement().leaveGroup(groupName, null);
+
+          Navigator.of(context).pop(); // Leave group page
         },
       );
 
