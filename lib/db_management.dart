@@ -11,17 +11,19 @@ class DatabaseManagement{
   final dbEdRef = "amxnWsw1MGtECRVYmQuC";
   final dbRussRef = "LhWmzxZrtzDP6wZ81EWM";
 
-  void createUser(id) async {
-    print('Add user');
-  await databaseReference.collection("users")
-    .add({
-      'userID': '6',
-      'name':'Mateus Gurgel',
-      'searchKey':'M',
-      'dob':'',
-      'token':'',
-      'friends': {},
-    });
+  void createUser(id, String name) async {
+    // save the dBCodeNameRef here somewhere?
+
+    await databaseReference.collection("users")
+      .add({
+        'userID': id.toString(),
+        'name': name,
+        'searchKey': name.substring(0,1).toUpperCase(),
+        'dob':'',
+        'friends': {},
+        'groups': [],
+        'invites': [],
+      });
   }
 
   void editUser(String name){
@@ -179,7 +181,7 @@ class DatabaseManagement{
   checkUser(String userID)
   {
     return databaseReference.collection('users')
-    .where('token', isEqualTo: userID)
+    .where('userID', isEqualTo: userID)
     .getDocuments();
   }
 

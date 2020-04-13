@@ -137,7 +137,6 @@ class ProfilePage extends StatelessWidget {
         builder: (context) {
           return EditProfile();
         });
-      
     }
   }
 
