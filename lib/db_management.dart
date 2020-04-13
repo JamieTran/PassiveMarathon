@@ -8,9 +8,7 @@ class DatabaseManagement{
   void createUser(id, String name) async {
     // save the dBCodeNameRef here somewhere?
 
-    DocumentReference docRef = await
-
-    await databaseReference.collection("users")
+    DocumentReference docRef = await databaseReference.collection("users")
       .add({
         'userID': id.toString(),
         'name': name,
@@ -21,11 +19,15 @@ class DatabaseManagement{
         'invites': [],
       });
 
-      dBCodeNameRef = docRef.documentID;
+      setDBCodeNameRef(docRef.documentID);
+  }
+
+  void setDBCodeNameRef(String ref)
+  {
+    dBCodeNameRef = ref;
   }
 
   void editUser(String name){
-    // TODO: working on edit user
     DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
 
     doc.get().then((datasnapshot) {
@@ -182,5 +184,4 @@ class DatabaseManagement{
     .where('userID', isEqualTo: userID)
     .getDocuments();
   }
-
 }

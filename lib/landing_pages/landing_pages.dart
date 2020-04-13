@@ -27,7 +27,6 @@ class LandingPagesState extends State<LandingPages> {
 
   List<dynamic> userData = new List<dynamic>();
 
-  // TODO: Move these into constants
   static var landingHeaders = [
     "Marathon",
     "Something About Friends",
@@ -51,7 +50,7 @@ class LandingPagesState extends State<LandingPages> {
       case 0:
         break;
       default:
-      Constants.user_id = 20;// int.parse(mrthnUserId);
+      Constants.user_id = 22;// int.parse(mrthnUserId);
       DatabaseManagement().checkUser(Constants.user_id.toString()).then((QuerySnapshot docs) {
         for (int i=0;i<docs.documents.length;i++){
           userData.add(docs.documents[i].data);
@@ -62,7 +61,6 @@ class LandingPagesState extends State<LandingPages> {
             context,
             MaterialPageRoute(builder: (context) => HomePage()),
           );
-
           print("showing alert");
           showDialog(
             context: context,
@@ -74,6 +72,7 @@ class LandingPagesState extends State<LandingPages> {
         }
         else
         {
+          DatabaseManagement().setDBCodeNameRef(docs.documents[0].documentID);
           Constants.user_name = userData[0]["name"];
           Navigator.push(
             context,
