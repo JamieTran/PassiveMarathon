@@ -3,16 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DatabaseManagement{
 
   final databaseReference = Firestore.instance;
-  final dBCodeNameRef = "n577th9XQjF5eaa1HCp3";
-
-  final dbCodeMateusRef = "qg6qy3W7SpRQz4XoVQyo";
-  final dbCodeMannyRef = "hYN5tKpN2qwYMF5w0hmI";
-  final dbJamieRef = "XmnSMwyrdZaAuX3JK4K3";
-  final dbEdRef = "amxnWsw1MGtECRVYmQuC";
-  final dbRussRef = "LhWmzxZrtzDP6wZ81EWM";
+  var dBCodeNameRef;
 
   void createUser(id, String name) async {
     // save the dBCodeNameRef here somewhere?
+
+    DocumentReference docRef = await
 
     await databaseReference.collection("users")
       .add({
@@ -24,6 +20,12 @@ class DatabaseManagement{
         'groups': [],
         'invites': [],
       });
+
+      dBCodeNameRef = docRef.documentID;
+
+      DocumentReference docRef = await 
+      Firestore.instance.collection('gameLevels').add(map);
+      print(docRef.documentID);
   }
 
   void editUser(String name){
@@ -55,7 +57,7 @@ class DatabaseManagement{
       }
     });
 
-    await databaseReference.collection("groups").document(groupName)
+/*     await databaseReference.collection("groups").document(groupName)
     .setData({
       'groupName':groupName,
       'groupDistance':groupDistance,
@@ -65,7 +67,7 @@ class DatabaseManagement{
                      {"name":"Russ Foubert","distance":16, "reference":dbRussRef},
                      {"name":"Manuel Poppe Richter","distance":13,"reference":dbCodeMannyRef},
                      {"name":"Jamie Tran","distance":10,"reference":dbJamieRef}]
-    });
+    }); */
 
     DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
 
