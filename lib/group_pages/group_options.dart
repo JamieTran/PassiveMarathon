@@ -16,3 +16,9 @@ const List<Choice> memberChoices = const <Choice>[
   const Choice(title: 'Invite Member', icon: Icons.add),
   const Choice(title: 'Leave Group', icon: Icons.exit_to_app)
 ];
+
+const List<Choice> adminMarathonComplete = const <Choice>[
+  const Choice(title: 'Restart', icon: Icons.refresh),
+  const Choice(title: 'Invite Member', icon: Icons.add),
+  const Choice(title: 'Delete Group', icon: Icons.delete_forever)
+];
