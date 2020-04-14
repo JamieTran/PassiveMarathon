@@ -3,24 +3,37 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DatabaseManagement{
 
   final databaseReference = Firestore.instance;
-  final dBCodeNameRef = "n577th9XQjF5eaa1HCp3";
+  var dBCodeNameRef;
 
-  final dbCodeMateusRef = "qg6qy3W7SpRQz4XoVQyo";
-  final dbCodeMannyRef = "hYN5tKpN2qwYMF5w0hmI";
-  final dbJamieRef = "XmnSMwyrdZaAuX3JK4K3";
-  final dbEdRef = "amxnWsw1MGtECRVYmQuC";
-  final dbRussRef = "LhWmzxZrtzDP6wZ81EWM";
+  void createUser(id, String name) async {
+    // save the dBCodeNameRef here somewhere?
 
-  void createUser(id) async {
-    print('Add user');
-  await databaseReference.collection("users")
-    .add({
-      'userID': '6',
-      'name':'Mateus Gurgel',
-      'searchKey':'M',
-      'dob':'',
-      'token':'',
-      'friends': {},
+    DocumentReference docRef = await databaseReference.collection("users")
+      .add({
+        'userID': id.toString(),
+        'name': name,
+        'searchKey': name.substring(0,1).toUpperCase(),
+        'dob':'',
+        'friends': {},
+        'groups': [],
+        'invites': [],
+      });
+
+      setDBCodeNameRef(docRef.documentID);
+  }
+
+  void setDBCodeNameRef(String ref)
+  {
+    dBCodeNameRef = ref;
+  }
+
+  void editUser(String name){
+    DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
+
+    doc.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      databaseReference.collection('users').document(dBCodeNameRef).updateData({"name": name});
+      }
     });
   }
 
@@ -51,14 +64,20 @@ class DatabaseManagement{
       }
     });
 
-    await databaseReference.collection("groups").document(groupName)
+/*     await databaseReference.collection("groups").document(groupName)
     .setData({
       'admin':dBCodeNameRef,
       'groupName':groupName,
       'groupDistance':groupDistance,
+      'membersInfo':[{"name":name,"distance":32,"reference":dBCodeNameRef},
+                     {"name":"Mateus Gurgel","distance":28,"reference":dbCodeMateusRef},
+                     {"name":"Ed Barsalou","distance":20, "reference":dbEdRef},
+                     {"name":"Russ Foubert","distance":16, "reference":dbRussRef},
+                     {"name":"Manuel Poppe Richter","distance":13,"reference":dbCodeMannyRef},
+                     {"name":"Jamie Tran","distance":10,"reference":dbJamieRef}]
       'admin':dBCodeNameRef,
       'membersInfo':[{"name":name,"distance":0,"reference":dBCodeNameRef}]
-    });
+    });*/
 
     DocumentReference array =  databaseReference.collection('users').document(dBCodeNameRef);
 
@@ -346,5 +365,10 @@ class DatabaseManagement{
   });
   }
 
-  
+  checkUser(String userID)
+  {
+    return databaseReference.collection('users')
+    .where('userID', isEqualTo: userID)
+    .getDocuments();
+  }
 }

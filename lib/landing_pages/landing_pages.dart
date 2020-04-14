@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:passive_marathon/home_pages/new_user_alert.dart';
 import './page.dart';
 import './dots.dart';
 import './description_box.dart';
@@ -6,8 +7,8 @@ import '../home_pages/home_page.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import '../constants.dart' as Constants;
-import 'package:url_launcher/url_launcher.dart';
-import '../home_pages/home_page.dart';
+import '../db_management.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LandingPages extends StatefulWidget {
   @override
@@ -24,7 +25,8 @@ class LandingPagesState extends State<LandingPages> {
   static const _kCurve = Curves.ease;
   final _kArrowColor = Colors.black.withOpacity(0.8);
 
-  // TODO: Move these into constants
+  List<dynamic> userData = new List<dynamic>();
+
   static var landingHeaders = [
     "Marathon",
     "Something About Friends",
@@ -41,18 +43,43 @@ class LandingPagesState extends State<LandingPages> {
     final result = await FlutterWebAuth.authenticate(
         url: Constants.login_url, callbackUrlScheme: "passivemarathon");
 
-    final token = Uri.parse(result).queryParameters['userId'];
-    print(token);
+    final mrthnUserId = Uri.parse(result).queryParameters['userId'];
+    print(mrthnUserId);
 
-    switch (int.parse(token)) {
+    switch (int.parse(mrthnUserId)) {
       case 0:
         break;
       default:
-      Constants.user_id = int.parse(token);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
+      Constants.user_id = 22;// int.parse(mrthnUserId);
+      DatabaseManagement().checkUser(Constants.user_id.toString()).then((QuerySnapshot docs) {
+        for (int i=0;i<docs.documents.length;i++){
+          userData.add(docs.documents[i].data);
+        }
+        if (userData.length <= 0)
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+          print("showing alert");
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return NewUserAlert();
+            }
+          );
+        
+        }
+        else
+        {
+          DatabaseManagement().setDBCodeNameRef(docs.documents[0].documentID);
+          Constants.user_name = userData[0]["name"];
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        }
+      });
     }
   }
 

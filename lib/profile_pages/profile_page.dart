@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants.dart' as Constants;
 import '../mrthn/mrth_api.dart';
+import './edit_profile.dart';
 
 // Stateful widgets are used when you need to update the screen
 // with data constantly, this works for passive marathon
@@ -18,7 +19,7 @@ class ProfilePage extends StatelessWidget {
         backgroundColor: Constants.bright_purple,
         actions: <Widget>[
           PopupMenuButton<String>(
-              onSelected: choiceAction,
+              onSelected: (choice) => choiceAction(choice, context),
               itemBuilder: (BuildContext context) {
               return profile_choices.map((String choice) {
                 return PopupMenuItem<String>(
@@ -49,7 +50,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 SizedBox(height: 25.0),
                 Text(
-                  'Jamie Tran',
+                  Constants.user_name,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 20.0,
@@ -129,9 +130,13 @@ class ProfilePage extends StatelessWidget {
     );
   }
   
-  void choiceAction(String choice) {
+  void choiceAction(String choice, BuildContext context) {
     if (choice == "Edit Profile") {
-      MrthnAPI.fetchSteps();
+      showDialog(
+        context: context,
+        builder: (context) {
+          return EditProfile();
+        });
     }
   }
 
