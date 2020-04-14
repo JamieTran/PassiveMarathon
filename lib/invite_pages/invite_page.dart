@@ -28,7 +28,7 @@ updateList()
 {
   invitesArray.clear();
   invitesList.clear();
-  DatabaseManagement().getInvitesArray().get().then((datasnapshot) {
+  Constants.dbManagement.getInvitesArray().get().then((datasnapshot) {
     if (datasnapshot.exists) {
       setState((){
         invitesList = (datasnapshot.data['invites']);
@@ -102,7 +102,7 @@ showAlertDialog(BuildContext context, data) {
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
           // Remove request from invites
-          DatabaseManagement().removeInvite(data);
+          Constants.dbManagement.removeInvite(data);
         },
       );
       Widget continueButton = FlatButton(
@@ -110,9 +110,9 @@ showAlertDialog(BuildContext context, data) {
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
           // Add Friend
-          DatabaseManagement().addFriend(data['senderName'],data['senderRef']);
+          Constants.dbManagement.addFriend(data['senderName'],data['senderRef']);
           // Remove request from invites
-          DatabaseManagement().removeInvite(data);
+          Constants.dbManagement.removeInvite(data);
 
         },
       );
@@ -142,7 +142,7 @@ showAlertDialog(BuildContext context, data) {
             onPressed:  () {
               Navigator.of(context).pop(); // dismiss dialog
               // Remove Request
-              DatabaseManagement().removeInvite(data);
+              Constants.dbManagement.removeInvite(data);
             },
           );
           Widget continueButton = FlatButton(
@@ -150,9 +150,9 @@ showAlertDialog(BuildContext context, data) {
             onPressed:  () async {
               Navigator.of(context).pop(); // dismiss dialog
               // Add user to group and add the group to the users array
-              DatabaseManagement().addUserToGroup(data["groupName"]); 
+              Constants.dbManagement.addUserToGroup(data["groupName"]); 
               // Remove Request
-              DatabaseManagement().removeInvite(data);
+              Constants.dbManagement.removeInvite(data);
             },
           );
 

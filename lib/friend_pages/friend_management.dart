@@ -36,7 +36,7 @@ class FriendsManagement extends State<FriendScreen> {
       backgroundColor: Constants.bright_white,
       body:
         StreamBuilder<DocumentSnapshot>(
-          stream: Firestore.instance.collection('users').document(DatabaseManagement().getUserRef()).snapshots(),
+          stream: Firestore.instance.collection('users').document(Constants.dbManagement.getUserRef()).snapshots(),
           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot)
           {
             if (snapshot.hasError) {
@@ -66,7 +66,7 @@ class FriendsManagement extends State<FriendScreen> {
                                   FlatButton(
                                     onPressed: () => {
                                       print(value),
-                                      DatabaseManagement().removeFriend(value),
+                                      Constants.dbManagement.removeFriend(value),
                                       Navigator.of(context).pop(true)
                                       },
                                     child: const Text("DELETE")

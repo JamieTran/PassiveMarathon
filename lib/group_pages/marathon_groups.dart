@@ -36,7 +36,7 @@ class MarathonGroups extends State<GroupsScreen> {
       backgroundColor: Constants.bright_white,
       body: 
         StreamBuilder<DocumentSnapshot>(
-          stream: Firestore.instance.collection('users').document(DatabaseManagement().getUserRef()).snapshots(),
+          stream: Firestore.instance.collection('users').document(Constants.dbManagement.getUserRef()).snapshots(),
           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot)
           {
             if (snapshot.hasError) {

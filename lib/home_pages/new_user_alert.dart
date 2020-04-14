@@ -41,7 +41,7 @@ class _NewUserAlertState extends State{
         new FlatButton(
           child: new Text('SAVE'),
           onPressed: () {
-            DatabaseManagement().createUser(Constants.user_id, userName.text);
+            Constants.dbManagement.createUser(Constants.user_id, userName.text);
             Navigator.of(context).pop();
           },
         )

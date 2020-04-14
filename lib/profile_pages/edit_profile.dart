@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../db_management.dart';
+import '../constants.dart' as Constants;
 
 class EditProfile extends StatefulWidget{
 
@@ -45,7 +46,7 @@ class _EditProfileState extends State{
         new FlatButton(
           child: new Text('SAVE'),
           onPressed: () {
-            DatabaseManagement().editUser(userName.text);
+            Constants.dbManagement.editUser(userName.text);
             Navigator.of(context).pop();
           },
         )

@@ -1,6 +1,7 @@
 library Constants;
 
 import 'package:flutter/material.dart';
+import './db_management.dart';
 
 const Color pastel_green = Color(0xFF469DA0);
 const Color pastel_yellow = Color(0xFFEBE280);
@@ -54,6 +55,8 @@ const String login_url = "https://api.mrthn.dev/login?service=fitbit&token=" + t
 
 int user_id = 0;
 String user_name = "";
+
+DatabaseManagement dbManagement = new DatabaseManagement(); // singleton
 
 const List<String> choices = <String>[
   create_group,

@@ -32,7 +32,7 @@ initiateSearch(username) {
       username.substring(0,1).toUpperCase() + username.substring(1);
 
   if (queryResultSet.length == 0 && username.length == 1) {
-    DatabaseManagement().queryUsers(username).then((QuerySnapshot docs) {
+    Constants.dbManagement.queryUsers(username).then((QuerySnapshot docs) {
       for (int i=0;i<docs.documents.length;i++){
         queryResultSet.add(docs.documents[i].data);
         docIDSet[docs.documents[i].data['name']] = docs.documents[i].documentID;
@@ -137,7 +137,7 @@ showAlertDialog(BuildContext context, dataField, dataObject, dataObjectDoc,int f
           Navigator.of(context).pop(); // dismiss dialog
 
           // This now sends a friend request
-          DatabaseManagement().sendFriendInvite(dataObjectDoc);
+          Constants.dbManagement.sendFriendInvite(dataObjectDoc);
 
           //DatabaseManagement().addFriend(dataObject['name']);
         },

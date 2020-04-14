@@ -33,11 +33,11 @@ void initState() {
 
 updateUI()
 {
-  DatabaseManagement().getGroupRef(groupData).get().then((datasnapshot) {
+  Constants.dbManagement.getGroupRef(groupData).get().then((datasnapshot) {
     if (datasnapshot.exists) {
       String adminRef = datasnapshot.data['admin'];
 
-        if (adminRef == DatabaseManagement().getUserRef()) // User is Admin
+        if (adminRef == Constants.dbManagement.getUserRef()) // User is Admin
         {
           setState(() {
             isAdmin = true;
@@ -147,7 +147,7 @@ updateUI()
           children :[
             Expanded( child: 
             StreamBuilder(
-              stream: DatabaseManagement().getGroupStreamSnapShot(groupData),
+              stream: Constants.dbManagement.getGroupStreamSnapShot(groupData),
               builder:(context, snapshot) {
                 if (!snapshot.hasData) return const Text('Loading...');
                 return ListView.builder(
@@ -182,7 +182,7 @@ showAlertDialog(BuildContext context, groupName, int feature) {
         child: Text("Confirm"),
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
-          DatabaseManagement().deleteGroup(groupName); // Delete Group Here
+          Constants.dbManagement.deleteGroup(groupName); // Delete Group Here
           Navigator.of(context).pop();                 // return to previous screen
         },
       );
@@ -221,7 +221,7 @@ showAlertDialog(BuildContext context, groupName, int feature) {
 
           try {
           // Leave Group Here, null = current user leaves
-          DatabaseManagement().leaveGroup(groupName, null);
+          Constants.dbManagement.leaveGroup(groupName, null);
           }
           catch (e) {
             // May have to redo this, exception is thrown when leaving group

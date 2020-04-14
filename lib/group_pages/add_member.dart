@@ -58,7 +58,7 @@ updateList()
   friendArray.clear();
   refArray.clear();
   friendsList.clear(); 
-  DatabaseManagement().getFriendsArray().get().then((datasnapshot) {
+  Constants.dbManagement.getFriendsArray().get().then((datasnapshot) {
     if (datasnapshot.exists) {
       friendsList = Map.from(datasnapshot.data['friends']);
          friendsList.forEach((k,v) => 
@@ -138,7 +138,7 @@ showAlertDialog(BuildContext context, groupData, dataObjectKey, dataObjectValue,
           Navigator.of(context).pop(); // dismiss dialog
 
           // Send Invite 
-          DatabaseManagement().sendGroupInvite(groupData, dataObjectValue);
+          Constants.dbManagement.sendGroupInvite(groupData, dataObjectValue);
         },
       );
 
