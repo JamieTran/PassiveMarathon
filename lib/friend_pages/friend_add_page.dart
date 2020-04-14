@@ -135,14 +135,18 @@ showAlertDialog(BuildContext context, dataField, dataObject, dataObjectDoc,int f
         child: Text("Confirm"),
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
-          DatabaseManagement().addFriend(dataObject['name'], dataObjectDoc);
+
+          // This now sends a friend request
+          DatabaseManagement().sendFriendInvite(dataObjectDoc);
+
+          //DatabaseManagement().addFriend(dataObject['name']);
         },
       );
 
       // set up the AlertDialog
       AlertDialog alert = AlertDialog(
         title: Text("Add Friend"),
-        content: Text("Would you like to add "+dataField+" as your friend?"),
+        content: Text("Would you like to send "+dataField+" a friend request?"),
         actions: [
           cancelButton,
           continueButton,
@@ -157,47 +161,6 @@ showAlertDialog(BuildContext context, dataField, dataObject, dataObjectDoc,int f
         },
       );
         }
-    break;
-  case Constants.remove_friend: {
-    Widget cancelButton = FlatButton(
-            child: Text("Cancel"),
-            onPressed:  () {
-              Navigator.of(context).pop(); // dismiss dialog
-            },
-          );
-          Widget continueButton = FlatButton(
-            child: Text("Confirm"),
-            onPressed:  () async {
-              Navigator.of(context).pop(); // dismiss dialog
-              DatabaseManagement().removeFriend(dataObject);
-              if (updateFunc != null)
-              {
-                updateFunc();
-              }
-                // The content doesn't update when you remove it. This is because when we click on a user in the friend
-                // list, it will open a new page, when we return from that page, thats when we can refresh this.
-                // This is similar to how the list is refreshed when we add a friend.
-            },
-          );
-
-          // set up the AlertDialog
-          AlertDialog alert = AlertDialog(
-            title: Text("Remove Friend"),
-            content: Text("Would you like to remove "+dataField+" from your friend list?"),
-            actions: [
-              cancelButton,
-              continueButton,
-            ],
-          );
-
-          // show the dialog
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return alert;
-            },
-          );
-    }
     break;
 }
 }
