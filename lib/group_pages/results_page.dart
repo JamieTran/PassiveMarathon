@@ -54,26 +54,6 @@ updateUI()
   });
 }
 
-  Widget _buildListItem(BuildContext context, document, groupDistance, indexVal)
-  {
-    return ListTile(
-      title: Row(
-        children: [
-          Expanded( child:
-            Container(
-              color: determineBackgroundColor(indexVal),
-              child: 
-                _tile(document["name"].toString(), (document["distance"]/groupDistance),document["distance"], Icons.account_circle, indexVal),
-                )
-              )
-            ],
-          ),
-      onTap: () {
-          // Profile Page redirect here
-      },
-    );
-  }
-
   void _select(Choice choice) {
     // Causes the app to rebuild with the new _selectedChoice.
     switch (choice.title)
@@ -102,7 +82,7 @@ updateUI()
     if (isAdmin) // User is Admin
     {
       return AppBar(
-                title: Text(groupData.toString()),
+                title: Text("Results"),
                 backgroundColor: Constants.bright_red,
                 actions: <Widget>[
                   PopupMenuButton<Choice>(
@@ -122,7 +102,7 @@ updateUI()
     else  // User is not Admin
     {
       return AppBar(
-                title: Text(groupData.toString()),
+                title: Text("Results"),
                 backgroundColor: Constants.bright_red,
                 actions: <Widget>[
                   PopupMenuButton<Choice>(
@@ -147,25 +127,7 @@ updateUI()
         appBar: checkRole(),
         backgroundColor: Constants.bright_white,
         body:
-        Column(
-          children :[
-            Expanded( child: 
-            StreamBuilder(
-              stream: DatabaseManagement().getGroupStreamSnapShot(groupData),
-              builder:(context, snapshot) {
-                if (!snapshot.hasData) return const Text('Loading...');
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemExtent: 80.0,
-                  itemCount: snapshot.data["membersInfo"].length,
-                  itemBuilder: (context, index) =>
-                    _buildListItem(context, snapshot.data["membersInfo"][index], snapshot.data["groupDistance"], index), //snapshot.data.documents[index]
-                );
-              },
-            )
-            )
-          ]
-        )
+        null
       );
   }
 }
@@ -174,6 +136,41 @@ showAlertDialog(BuildContext context, groupName, int feature) {
   // set up the buttons
   switch (feature)
   {
+    case Constants.restart_group: {   
+      Widget cancelButton = FlatButton(
+        child: Text("Cancel"),
+        onPressed:  () {
+          Navigator.of(context).pop(); // dismiss dialog
+        },
+      );
+      Widget continueButton = FlatButton(
+        child: Text("Confirm"),
+        onPressed:  () {
+          Navigator.of(context).pop(); // dismiss dialog
+          // Restart Group Here
+          Navigator.of(context).pop();                 // return to previous screen
+        },
+      );
+
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: Text("Restart Marathon"),
+        content: Text("This following action will restart the marathon, do you wish to continue?"),
+        actions: [
+          cancelButton,
+          continueButton,
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+        }
+    break;
     // Delete the group option
     case Constants.delete_group: {   
       Widget cancelButton = FlatButton(
@@ -253,76 +250,6 @@ showAlertDialog(BuildContext context, groupName, int feature) {
         },
       );
         }
-    break;
-  }
-}
-
-ListTile _tile(String title, distance, distanceComplete, IconData icon, indexVal) => ListTile(
-      title: Text(title,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 20,
-          )),
-      subtitle: LinearProgressIndicator(
-      value: distance,
-      valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue[300]),
-      backgroundColor: Constants.bright_white,
-      ),
-      leading: Icon(
-        icon,
-        color: Colors.black,
-        size: 50,
-      ),
-      trailing: Text(distanceComplete.toString() + ' Km'),
-    );
-
-determinePosition(place)
-{
-  switch (place)
-  {
-    case 0:
-      return Icon(Icons.flag, color: Colors.black, size:25);
-    break;
-    default:
-      return null;
-    break;
-  }
-}
-
-determineBackgroundColor(place)
-{
-    switch (place)
-  {
-    case 0:
-      return Constants.nautical_yellow;
-    break;
-    case 1:
-      return Constants.place_second;
-    break;
-    case 2:
-      return Constants.place_third;
-    break;
-    default:
-      return Constants.bright_white;
-    break;
-  }
-}
-
-determineColor(place)
-{
-  switch (place)
-  {
-    case 0:
-      return new AlwaysStoppedAnimation<Color>(Colors.yellow[200]);
-    break;
-    case 1:
-      return new AlwaysStoppedAnimation<Color>(Colors.grey[300]);
-    break;
-    case 2:
-      return new AlwaysStoppedAnimation<Color>(Colors.brown[300]);
-    break;
-    default:
-      return new AlwaysStoppedAnimation<Color>(Colors.blue[300]);
     break;
   }
 }
