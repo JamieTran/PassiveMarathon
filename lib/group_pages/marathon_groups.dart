@@ -45,7 +45,7 @@ class MarathonGroups extends State<GroupsScreen> {
             switch (snapshot.connectionState)
             {
               case ConnectionState.waiting:
-                return Text ('Loading...');
+                return CircularProgressIndicator();
               default:
                 return ListView.builder(
                   padding: EdgeInsets.all(8.0),
