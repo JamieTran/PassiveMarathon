@@ -9,6 +9,8 @@ import 'package:passive_marathon/group_pages/results_page.dart';
 import '../constants.dart' as Constants;
 import './group_options.dart';
 import 'dart:async';
+import 'package:flutter/scheduler.dart';
+
 
 class GroupScreen extends StatefulWidget {
 
@@ -32,6 +34,21 @@ class GroupPage extends State<GroupScreen> {
 void initState() {
   super.initState();
   updateUI();
+   if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+        SchedulerBinding.instance.addPostFrameCallback((_) => checkRaceComplete(context));
+   }}
+
+checkRaceComplete(context)
+{
+  if (winnersList.length == 3)                     // 3 winners found, end race
+  {
+    winnersList.clear();
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ResultsScreen(groupData))
+      ); 
+  }
 }
 
 sortMembers(dynamic unorderedList)
@@ -73,6 +90,9 @@ updateUI()
     // Causes the app to rebuild with the new _selectedChoice.
     switch (choice.title)
     {
+      case "Restart":
+        showAlertDialog(context, groupData, Constants.restart_group);
+      break;
       case "Invite Member":
         Navigator.push(
           context,
@@ -147,7 +167,6 @@ updateUI()
               builder:(context, snapshot) {
                 if (!snapshot.hasData) return CircularProgressIndicator();
                 List<dynamic> sortedList = sortMembers(snapshot.data["membersInfo"]);
-
                 return ListView.builder(
                   shrinkWrap: true,
                   itemExtent: 80.0,
@@ -170,42 +189,6 @@ showAlertDialog(BuildContext context, groupName, int feature) {
   // set up the buttons
   switch (feature)
   {
-    // Delete the group option
-    case Constants.restart_group: {   
-      Widget cancelButton = FlatButton(
-        child: Text("Cancel"),
-        onPressed:  () {
-          Navigator.of(context).pop(); // dismiss dialog
-        },
-      );
-      Widget continueButton = FlatButton(
-        child: Text("Confirm"),
-        onPressed:  () {
-          Navigator.of(context).pop(); // dismiss dialog
-          // Restart Race here
-          Navigator.of(context).pop(); // return to previous screen
-        },
-      );
-
-      // set up the AlertDialog
-      AlertDialog alert = AlertDialog(
-        title: Text("Restart Marathon"),
-        content: Text("This following action will restart the race, do you wish to continue?"),
-        actions: [
-          cancelButton,
-          continueButton,
-        ],
-      );
-
-      // show the dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
-        }
-    break;
     // Delete the group option
     case Constants.delete_group: {   
       Widget cancelButton = FlatButton(
@@ -319,17 +302,6 @@ ListTile determineRaceStatus(document, groupDistance, indexVal, BuildContext con
     if (!winnersList.contains(document['reference']))  // If list doesnt have winner, 
     {
       winnersList.add(document['reference']);          // Add winner
-      if (winnersList.length == 3)                     // 3 winners found, end race
-      {
-        winnersList.clear();
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ResultsScreen(groupData))
-          ); 
-
-          // Redirect here is broken
-      }
     }
   }
 
