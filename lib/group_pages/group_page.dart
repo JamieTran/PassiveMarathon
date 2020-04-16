@@ -33,7 +33,7 @@ class GroupPage extends State<GroupScreen> {
 @override
 void initState() {
   super.initState();
-  updateUI();
+  updateUI();   // This code will call checkRaceComplete once the very last frame is rendered to the screen
    if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks) {
         SchedulerBinding.instance.addPostFrameCallback((_) => checkRaceComplete(context));
    }}
