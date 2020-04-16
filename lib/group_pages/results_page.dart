@@ -147,7 +147,7 @@ showAlertDialog(BuildContext context, groupName, int feature) {
         child: Text("Confirm"),
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
-          // Restart Group Here
+          DatabaseManagement().restartGroup(groupName);
           Navigator.of(context).pop();                 // return to previous screen
         },
       );
