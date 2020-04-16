@@ -50,11 +50,11 @@ class LandingPagesState extends State<LandingPages> {
       case 0:
         break;
       default:
-      Constants.user_id = int.parse(mrthnUserId); // edit this to switch users
+      Constants.user_id = 3;//int.parse(mrthnUserId); // edit this to switch users
       Constants.dbManagement.checkUser(Constants.user_id.toString()).then((QuerySnapshot docs) {
         for (int i=0;i<docs.documents.length;i++){
           userData.add(docs.documents[i].data);
-        }
+        } 
         if (userData.length <= 0)
         {
           Navigator.push(

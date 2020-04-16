@@ -20,7 +20,7 @@ class _NewUserAlertState extends State{
     return AlertDialog(
       title: Text('Welcome to Lazy Olympics!'),
       content: SingleChildScrollView(
-          child: Column( 
+          child: Column(  
             children: <Widget> [
               Text(
                 "Who do you want to be known as?",

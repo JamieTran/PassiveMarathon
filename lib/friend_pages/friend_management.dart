@@ -87,7 +87,7 @@ class FriendsManagement extends State<FriendScreen> {
                             onTap: () async {
                               await Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => ProfilePage()));
+                                MaterialPageRoute(builder: (context) => new ProfilePage(value)));
                                 },
                             leading: Icon(Icons.account_circle),
                             title: Text('$key'),

@@ -118,22 +118,22 @@ updateUI()
     else  // User is not Admin
     {
       return AppBar(
-                title: Text(groupData.toString()),
-                backgroundColor: Constants.bright_red,
-                actions: <Widget>[
-                  PopupMenuButton<Choice>(
-                  onSelected: _select,
-                  itemBuilder: (BuildContext context) {
-                    return memberChoices.map((Choice choice) {
-                      return PopupMenuItem<Choice>(
-                        value: choice,
-                        child: Text(choice.title),
-                      );
-                    }).toList();
-                  },
-                )
-              ]
-            );
+        title: Text(groupData.toString()),
+        backgroundColor: Constants.bright_red,
+        actions: <Widget>[
+          PopupMenuButton<Choice>(
+          onSelected: _select,
+          itemBuilder: (BuildContext context) {
+            return memberChoices.map((Choice choice) {
+              return PopupMenuItem<Choice>(
+                value: choice,
+                child: Text(choice.title),
+              );
+            }).toList();
+          },
+        )
+      ]
+    );
     }
   }
 
