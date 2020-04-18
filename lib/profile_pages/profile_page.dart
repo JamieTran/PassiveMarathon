@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart' as Constants;
 import '../mrthn/mrth_api.dart';
@@ -5,7 +6,43 @@ import './edit_profile.dart';
 
 // Stateful widgets are used when you need to update the screen
 // with data constantly, this works for passive marathon
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+
+  var profileref;
+
+
+  @override
+  _ProfilePage createState() => _ProfilePage(profileref);
+  ProfilePage(this.profileref);
+  
+}
+
+class _ProfilePage extends State<ProfilePage>{
+
+  var profileref;
+  _ProfilePage(this.profileref);
+
+  var friendCount;
+  var groupCount;
+  var username = 'loading';
+
+  @override
+  void initState() {
+    super.initState();
+    updateUI();
+  }
+  
+  void updateUI() async{
+    await Constants.dbManagement.getFriendsArray(profileref).get().then((datasnapshot){
+        if (datasnapshot.exists) {
+        username = datasnapshot.data['name'];
+        friendCount = datasnapshot.data['friends'].length;
+        groupCount = datasnapshot.data['groups'].length;
+      }
+    setState(()  {
+      });
+    });
+  }
 
   static const List<String> profile_choices = <String>[
   'Edit Profile',
@@ -50,7 +87,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 SizedBox(height: 25.0),
                 Text(
-                  Constants.user_name,
+                  username,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 20.0,
@@ -88,7 +125,7 @@ class ProfilePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          '1',
+                          groupCount.toString(),
                           style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold),
@@ -106,7 +143,7 @@ class ProfilePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          '0',
+                          friendCount.toString(),
                           style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold),

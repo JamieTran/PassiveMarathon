@@ -54,7 +54,7 @@ class LandingPagesState extends State<LandingPages> {
       Constants.dbManagement.checkUser(Constants.user_id.toString()).then((QuerySnapshot docs) {
         for (int i=0;i<docs.documents.length;i++){
           userData.add(docs.documents[i].data);
-        }
+        } 
         if (userData.length <= 0)
         {
           Navigator.push(

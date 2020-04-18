@@ -58,7 +58,7 @@ updateList()
   friendArray.clear();
   refArray.clear();
   friendsList.clear(); 
-  Constants.dbManagement.getFriendsArray().get().then((datasnapshot) {
+  Constants.dbManagement.getFriendsArray(Constants.dbManagement.getUserRef()).get().then((datasnapshot) {
     if (datasnapshot.exists) {
       friendsList = Map.from(datasnapshot.data['friends']);
          friendsList.forEach((k,v) => 

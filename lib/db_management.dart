@@ -294,8 +294,8 @@ class DatabaseManagement{
     });
   }
 
-  getFriendsArray() {
-    return databaseReference.collection('users').document(dBCodeNameRef);
+  getFriendsArray(ref) {
+    return databaseReference.collection('users').document(ref);
   }
     // Did you notice these two functions return the same thing? I didn't. 
     // Don't worry I will be cleaning this up
@@ -353,14 +353,14 @@ class DatabaseManagement{
     DocumentReference array = databaseReference.collection('users').document(dBCodeNameRef);
     List<String> friendArray = new List<String>();
     await array.get().then((datasnapshot) {
-    if (datasnapshot.exists) {
-      friendArray = List.from(datasnapshot.data['friends']);
-      friendArray.forEach((element) => 
-        print(element)
-    );
-      print("INSIDE FUNCTION ->"+friendArray.toString());
-      return friendArray;
-    }
+      if (datasnapshot.exists) {
+        friendArray = List.from(datasnapshot.data['friends']);
+        friendArray.forEach((element) => 
+          print(element)
+      );
+        print("INSIDE FUNCTION ->"+friendArray.toString());
+        return friendArray;
+      }
     return friendArray;
   });
   }
