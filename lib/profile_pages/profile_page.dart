@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart' as Constants;
 import '../mrthn/mrth_api.dart';
@@ -25,11 +24,14 @@ class _ProfilePage extends State<ProfilePage>{
   var friendCount;
   var groupCount;
   var username = 'loading';
+  var userID;
+  var userDistance = 'loading';
 
   @override
   void initState() {
     super.initState();
     updateUI();
+    
   }
   
   void updateUI() async{
@@ -38,8 +40,18 @@ class _ProfilePage extends State<ProfilePage>{
         username = datasnapshot.data['name'];
         friendCount = datasnapshot.data['friends'].length;
         groupCount = datasnapshot.data['groups'].length;
+        userID = datasnapshot.data['userID'];
+
+        
+        print(userDistance);
+        print(userID);
+        print(friendCount);
+        print(groupCount);
       }
     setState(()  {
+      MrthnAPI.fetchDistance(userID).then((distance) => {
+          userDistance = distance,
+        });
       });
     });
   }
@@ -50,7 +62,13 @@ class _ProfilePage extends State<ProfilePage>{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FutureBuilder<String>(
+      future: MrthnAPI.fetchDistance(userID),
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+      if (snapshot.hasData) {
+        userDistance = snapshot.data;
+      }
+      return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
         backgroundColor: Constants.bright_purple,
@@ -107,14 +125,14 @@ class _ProfilePage extends State<ProfilePage>{
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          '100',
+                          userDistance,
                           style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 5.0),
                         Text(
-                          'Steps',
+                          'Distance(Kms)',
                           style: TextStyle(
                               fontFamily: 'Montserrat',
                               color: Colors.grey),
@@ -163,9 +181,8 @@ class _ProfilePage extends State<ProfilePage>{
               ],
           ),],
         ),
-      ),
-    );
-  }
+      ),);
+});}
   
   void choiceAction(String choice, BuildContext context) {
     if (choice == "Edit Profile") {
