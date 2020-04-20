@@ -30,15 +30,64 @@ class DatabaseManagement{
   void editUser(String name){
     DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
 
+    // Update your name in your DB copy
     doc.get().then((datasnapshot) {
     if (datasnapshot.exists) {
       databaseReference.collection('users').document(dBCodeNameRef).updateData({"name": name});
       }
     });
 
-    // Update name in friend's array
+    // Update your name among all your friends
+    doc.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      Map<dynamic, dynamic> friendArray = datasnapshot.data['friends'];
 
-    // Update name in groups
+        for (var item in friendArray.values)
+        {
+          DocumentReference docFriendRef = databaseReference.collection('users').document(item);
+
+          docFriendRef.get().then((datasnapshot) {
+          if (datasnapshot.exists) {
+            Map<dynamic, dynamic> friendArrayOfFriend = datasnapshot.data['friends'];
+
+            var key = friendArrayOfFriend.keys.firstWhere(
+              (k) => friendArrayOfFriend[k] == dBCodeNameRef, orElse: () => null);
+
+              friendArrayOfFriend.remove(key);
+              friendArrayOfFriend[name] = dBCodeNameRef;
+              databaseReference.collection('users').document(item).updateData({"friends": friendArrayOfFriend});  
+            }
+          });
+        }
+      }
+    });
+
+    // Update name in your groups
+    doc.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      List<dynamic> groupArray = datasnapshot.data['groups'];
+
+      for(String group in groupArray)
+      {
+        DocumentReference groupRef = databaseReference.collection('groups').document(group);
+
+        groupRef.get().then((datasnapshot) async {
+        if (datasnapshot.exists) {
+          List<dynamic> memberArray = datasnapshot.data['membersInfo'].toList();
+          
+            for (Map item in memberArray)
+            {
+              if (item['reference'] == dBCodeNameRef) // its the user
+              {
+                  item['name'] = name;  // Update users name
+                  databaseReference.collection('groups').document(group).updateData({"membersInfo": memberArray});
+              }
+            }
+          }
+        });
+      }
+    }
+    });
   }
 
   getUserRef()
