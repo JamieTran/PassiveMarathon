@@ -28,7 +28,6 @@ class GroupPage extends State<GroupScreen> {
   bool isAdmin=false;
 
   GroupPage(this.groupData);
-  Timer timer;
 
 @override
 void initState() {
