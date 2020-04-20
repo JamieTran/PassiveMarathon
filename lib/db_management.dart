@@ -22,6 +22,26 @@ class DatabaseManagement{
       setDBCodeNameRef(docRef.documentID);
   }
 
+  void updateDistance(String userRef,double newDistance, groupRef)
+  {
+    DocumentReference doc = databaseReference.collection('groups').document(groupRef);  // Get Reference
+
+    doc.get().then((datasnapshot) {
+      if (datasnapshot.exists) {
+        List<dynamic> memberArray = datasnapshot.data['membersInfo'].toList();          // Get membersInfo
+          
+            for (Map item in memberArray)
+            {
+              if (item['reference'] == userRef) // its the requested user
+              {
+                  item['distance'] = newDistance;  // Update users distance and save
+                  databaseReference.collection('groups').document(groupRef).updateData({"membersInfo": memberArray});
+              }
+            }
+        }
+      });    
+  }
+
   void setDBCodeNameRef(String ref)
   {
     dBCodeNameRef = ref;
