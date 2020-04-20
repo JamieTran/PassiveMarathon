@@ -69,13 +69,9 @@ updateDistance() async
   // get each distance from mrthn
   userIDs.forEach((k,v) => {
     MrthnAPI.fetchDistance(v).then((distance) => {
-        print(k + " " + distance + " " + v),
+      Constants.dbManagement.updateDistance(k, double.parse(distance), groupData),
       })
-  });
-
-  // update everyone's distance
-  
-}
+  });}
 
 sortMembers(dynamic unorderedList)
 {

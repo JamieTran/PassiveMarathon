@@ -22,7 +22,7 @@ class DatabaseManagement{
       setDBCodeNameRef(docRef.documentID);
   }
 
-  void updateDistance(String userRef,double newDistance, groupRef)
+  void updateDistance(String userRef, double newDistance, groupRef)
   {
     DocumentReference doc = databaseReference.collection('groups').document(groupRef);  // Get Reference
 
