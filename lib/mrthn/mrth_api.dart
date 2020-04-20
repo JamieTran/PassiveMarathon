@@ -13,18 +13,23 @@ class MrthnAPI {
     'https://api.mrthn.dev/user/' + mrthnID + '/distance/over-period?date=2020-02-13&period=30d&largestOnly=false',
       headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxIiwiaXNzIjoiTWFyYXRob24ifQ.1iZiWav2Ya6-jvQLkzQzoOuGCzjBK56R8pAiqnkF2UU"},
     );
+    if (response.body.contains("error")) return '0';
     return compute(parseValue, response.body);
   }
 
   static String parseValue(String responseBody) {
     
     var responseJson = json.decode(responseBody);
-    //print(responseBody);
-    var result = responseJson['result'];
-    //print(result[0]['value'].toString());
-    return result[0]['value'].toString();
+    try {
+      var result = responseJson['result'];
+      print(result[0]['value'].toString());
+      return result[0]['value'].toString();
 
-
+    } catch (e) {
+      return '0';
+    }
+    
+    
   }
 
 }

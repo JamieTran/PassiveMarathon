@@ -242,6 +242,18 @@ class DatabaseManagement{
     });
   }
 
+  Future<String> getIDFromCode(codeNameRef) async
+  {
+    DocumentReference doc = databaseReference.collection('users').document(codeNameRef);
+  
+    return await doc.get().then((datasnapshot) {
+    if (datasnapshot.exists) {
+      String id = datasnapshot.data['userID'];
+      return id;
+      }
+    });
+  }
+
   queryUsers(String username) {
     return databaseReference.collection('users')
     .where('searchKey', isEqualTo: username.substring(0,1).toUpperCase())

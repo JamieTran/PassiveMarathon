@@ -8,7 +8,7 @@ import 'package:passive_marathon/group_pages/add_member.dart';
 import 'package:passive_marathon/group_pages/results_page.dart';
 import '../constants.dart' as Constants;
 import './group_options.dart';
-import 'dart:async';
+import '../mrthn/mrth_api.dart';
 import 'package:flutter/scheduler.dart';
 
 
@@ -33,9 +33,11 @@ class GroupPage extends State<GroupScreen> {
 void initState() {
   super.initState();
   updateUI();   // This code will call checkRaceComplete once the very last frame is rendered to the screen
-   if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks) {
-        SchedulerBinding.instance.addPostFrameCallback((_) => checkRaceComplete(context));
-   }}
+  if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+      SchedulerBinding.instance.addPostFrameCallback((_) => checkRaceComplete(context));
+  }
+  updateDistance();
+}
 
 checkRaceComplete(context)
 {
@@ -48,6 +50,31 @@ checkRaceComplete(context)
       MaterialPageRoute(builder: (context) => ResultsScreen(groupData))
       ); 
   }
+}
+
+updateDistance() async
+{
+  Map<String,String> userIDs = new Map<String,String>();
+  await Constants.dbManagement.getGroupRef(groupData).get().then((datasnapshot) async {
+    if (datasnapshot.exists) {
+      List<dynamic> members = datasnapshot.data['membersInfo'];
+      for (var member in members) {
+        await Constants.dbManagement.getIDFromCode(member['reference']).then((user) =>
+        {
+          userIDs.addAll({member['reference']:user})
+        });
+      }
+    }
+  });
+  // get each distance from mrthn
+  userIDs.forEach((k,v) => {
+    MrthnAPI.fetchDistance(v).then((distance) => {
+        print(k + " " + distance + " " + v),
+      })
+  });
+
+  // update everyone's distance
+  
 }
 
 sortMembers(dynamic unorderedList)
