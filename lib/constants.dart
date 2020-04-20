@@ -41,6 +41,7 @@ const int remove_friend=1;
 const int join_group=2;
 const int delete_group=3;
 const int exit_group=4;
+const int restart_group=5;
 
 const String friend_request= 'Friend Request';
 const String group_request= 'Group Request';

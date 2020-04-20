@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:passive_marathon/db_management.dart';
 import 'package:passive_marathon/group_pages/add_member.dart';
+import 'package:passive_marathon/group_pages/results_page.dart';
 import '../constants.dart' as Constants;
 import './group_options.dart';
+import 'dart:async';
+import 'package:flutter/scheduler.dart';
+
 
 class GroupScreen extends StatefulWidget {
 
@@ -28,7 +32,35 @@ class GroupPage extends State<GroupScreen> {
 @override
 void initState() {
   super.initState();
-  updateUI();
+  updateUI();   // This code will call checkRaceComplete once the very last frame is rendered to the screen
+   if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+        SchedulerBinding.instance.addPostFrameCallback((_) => checkRaceComplete(context));
+   }}
+
+checkRaceComplete(context)
+{
+  if (winnersList.length == 3)                     // 3 winners found, end race
+  {
+    winnersList.clear();
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ResultsScreen(groupData))
+      ); 
+  }
+}
+
+sortMembers(dynamic unorderedList)
+{
+  List<dynamic> membersList = unorderedList;
+
+  membersList.sort((m1, m2) {
+  var r = m2["distance"].compareTo(m1["distance"]);
+  if (r != 0) return r;
+  return m2["distance"].compareTo(m1["distance"]);
+});
+
+return membersList;
 }
 
 updateUI()
@@ -53,30 +85,13 @@ updateUI()
   });
 }
 
-  Widget _buildListItem(BuildContext context, document, groupDistance, indexVal)
-  {
-    return ListTile(
-      title: Row(
-        children: [
-          Expanded( child:
-            Container(
-              color: determineBackgroundColor(indexVal),
-              child: 
-                _tile(document["name"].toString(), (document["distance"]/groupDistance),document["distance"], Icons.account_circle, indexVal),
-                )
-              )
-            ],
-          ),
-      onTap: () {
-          // Profile Page redirect here
-      },
-    );
-  }
-
   void _select(Choice choice) {
     // Causes the app to rebuild with the new _selectedChoice.
     switch (choice.title)
     {
+      case "Restart":
+        showAlertDialog(context, groupData, Constants.restart_group);
+      break;
       case "Invite Member":
         Navigator.push(
           context,
@@ -149,13 +164,14 @@ updateUI()
             StreamBuilder(
               stream: Constants.dbManagement.getGroupStreamSnapShot(groupData),
               builder:(context, snapshot) {
-                if (!snapshot.hasData) return const Text('Loading...');
+                if (!snapshot.hasData) return CircularProgressIndicator();
+                List<dynamic> sortedList = sortMembers(snapshot.data["membersInfo"]);
                 return ListView.builder(
                   shrinkWrap: true,
                   itemExtent: 80.0,
-                  itemCount: snapshot.data["membersInfo"].length,
+                  itemCount: sortedList.length,
                   itemBuilder: (context, index) =>
-                    _buildListItem(context, snapshot.data["membersInfo"][index], snapshot.data["groupDistance"], index), //snapshot.data.documents[index]
+                    _buildListItem(context, sortedList[index], snapshot.data["groupDistance"], index, groupData), //snapshot.data.documents[index]
                 );
               },
             )
@@ -165,6 +181,8 @@ updateUI()
       );
   }
 }
+
+List<String> winnersList = new List<String>();
 
 showAlertDialog(BuildContext context, groupName, int feature) {
   // set up the buttons
@@ -253,15 +271,52 @@ showAlertDialog(BuildContext context, groupName, int feature) {
   }
 }
 
-ListTile _tile(String title, distance, distanceComplete, IconData icon, indexVal) => ListTile(
+Widget _buildListItem(BuildContext context, document, groupDistance, indexVal, groupData)
+{
+  return ListTile(
+    title: Row(
+      children: [
+        Expanded( child:
+          Container(
+            color: determineBackgroundColor(indexVal),
+            child:
+              determineRaceStatus(document, groupDistance, indexVal, context, groupData),
+              )
+            )
+          ],
+        ),
+    onTap: () {
+        // Profile Page redirect here
+    },
+  );
+}
+
+ListTile determineRaceStatus(document, groupDistance, indexVal, BuildContext context, groupData)
+{
+  var userDistance = document['distance'];
+
+  if (userDistance >= groupDistance)  // Race Complete
+  {
+
+    if (!winnersList.contains(document['reference']))  // If list doesnt have winner, 
+    {
+      winnersList.add(document['reference']);          // Add winner
+    }
+  }
+
+  return _tile(document["name"].toString(), groupDistance,userDistance, Icons.account_circle, indexVal);
+  
+}
+
+ListTile _tile(String title, groupDistance, userDistance, IconData icon, indexVal) => ListTile(
       title: Text(title,
           style: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 20,
           )),
       subtitle: LinearProgressIndicator(
-      value: distance,
-      valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue[300]),
+      value: (userDistance/groupDistance),
+      valueColor: displayFinishColors(groupDistance, userDistance),
       backgroundColor: Constants.bright_white,
       ),
       leading: Icon(
@@ -269,8 +324,20 @@ ListTile _tile(String title, distance, distanceComplete, IconData icon, indexVal
         color: Colors.black,
         size: 50,
       ),
-      trailing: Text(distanceComplete.toString() + ' Km'),
+      trailing: Text(userDistance.toString() + ' Km'),
     );
+
+displayFinishColors(distance, distanceComplete)
+{
+  if (distanceComplete>=distance)
+  {
+    return new AlwaysStoppedAnimation<Color>(Colors.yellow[200]); // Race completed Color
+  }
+  else
+  {
+    return new AlwaysStoppedAnimation<Color>(Colors.blue[300]);   // Race in progress Color
+  }
+}
 
 determinePosition(place)
 {
