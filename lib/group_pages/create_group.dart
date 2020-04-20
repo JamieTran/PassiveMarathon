@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:passive_marathon/db_management.dart';
 import 'package:passive_marathon/group_pages/group_page.dart';
+import 'package:intl/intl.dart';
 import '../constants.dart' as Constants;
 
 class CreateGroup extends StatefulWidget{
@@ -60,7 +61,12 @@ class _CreateGroupState extends State{
           onPressed: () {
             print(_value);
             Navigator.of(context).pop();
-            Constants.dbManagement.createGroup(groupName.text, _value);
+
+            var now = new DateTime.now();
+            var formatter = new DateFormat('yyyy-MM-dd');
+            String date = formatter.format(now);
+
+            Constants.dbManagement.createGroup(groupName.text, _value, date);
           },
         )
       ],
