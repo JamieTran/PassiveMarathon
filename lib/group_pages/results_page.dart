@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:passive_marathon/db_management.dart';
 import 'package:passive_marathon/friend_pages/friend_add_page.dart';
 import 'package:passive_marathon/group_pages/add_member.dart';
+import 'package:intl/intl.dart';
 import '../constants.dart' as Constants;
 import './group_options.dart';
 
@@ -229,7 +230,12 @@ showAlertDialog(BuildContext context, groupName, int feature) {
         child: Text("Confirm"),
         onPressed:  () {
           Navigator.of(context).pop(); // dismiss dialog
-          Constants.dbManagement.restartGroup(groupName);
+
+            var now = new DateTime.now(); // Get Date
+            var formatter = new DateFormat('yyyy-MM-dd');
+            String date = formatter.format(now);
+
+          Constants.dbManagement.restartGroup(groupName, date);
           Navigator.of(context).pop();                 // return to previous screen
         },
       );
