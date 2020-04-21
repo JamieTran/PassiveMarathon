@@ -42,14 +42,32 @@ void initState() {
 
 checkRaceComplete(context)
 {
-  if (winnersList.length == 3)                     // 3 winners found, end race
+  print(membersInRace.toString());
+  if (membersInRace > 3)                            
   {
-    winnersList.clear();
+    print('Over 3 memebrs');
+    if (winnersList.length == 3)                     // 3 winners found, end race
+    {
+      winnersList.clear();
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ResultsScreen(groupData, winnersList))
-      ); 
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ResultsScreen(groupData, winnersList))
+        ); 
+    }
+  }
+  else
+  {
+    print('less than 3 members');
+    if (winnersList.length == 1)                     // 1 winner found, end race
+    {
+      winnersList.clear();
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ResultsScreen(groupData, winnersList))
+        ); 
+    }
   }
 }
 
@@ -190,6 +208,7 @@ updateUI()
               builder:(context, snapshot) {
                 if (!snapshot.hasData) return CircularProgressIndicator();
                 List<dynamic> sortedList = sortMembers(snapshot.data["membersInfo"]);
+                membersInRace = sortedList.length;
                 return ListView.builder(
                   shrinkWrap: true,
                   itemExtent: 80.0,
@@ -207,6 +226,7 @@ updateUI()
 }
 
 List<String> winnersList = new List<String>();
+var membersInRace=0;
 
 showAlertDialog(BuildContext context, groupName, int feature) {
   // set up the buttons
