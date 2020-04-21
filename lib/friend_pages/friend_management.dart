@@ -89,7 +89,7 @@ class FriendsManagement extends State<FriendScreen> {
                                 context,
                                 MaterialPageRoute(builder: (context) => new ProfilePage(value)));
                                 },
-                            leading: Icon(Icons.account_circle),
+                            leading: Icon(Icons.account_circle, color:Constants.placement_colors[index]),
                             title: Text('$key'),
                           ),
                       ), 

@@ -27,6 +27,8 @@ const Color bright_blue = Color(0xff3cbee3);
 const Color bright_yellow = Color(0xfffdb321);
 const Color bright_purple = Color(0xffa862ac);
 
+const List<Color> placement_colors = [bright_red,bright_blue,bright_yellow,bright_purple,pastel_darkGreen,pastel_red,pastel_black];
+
 const Color place_first = Color(0xFFF2DFA7);
 const Color place_second = Color(0xFFF2F2F2);
 const Color place_third = Color(0xFFD9AB9A);
@@ -36,21 +38,22 @@ const String create_group = 'Create Group';
 const String add_group = 'Add Group';
 const String leave_group = 'Leave Group';
 
-const int add_friend =0;
-const int remove_friend=1;
-const int join_group=2;
-const int delete_group=3;
-const int exit_group=4;
-const int restart_group=5;
+const int add_friend = 0;
+const int remove_friend = 1;
+const int join_group = 2;
+const int delete_group = 3;
+const int exit_group = 4;
+const int restart_group = 5;
 
-const String friend_request= 'Friend Request';
-const String group_request= 'Group Request';
+const String friend_request = 'Friend Request';
+const String group_request = 'Group Request';
 const String edit_profile = 'Edit';
 
 //TODO: will have to change this to marathon login page
-const String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxIiwiaXNzIjoiTWFyYXRob24ifQ.1iZiWav2Ya6-jvQLkzQzoOuGCzjBK56R8pAiqnkF2UU";
+const String token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxIiwiaXNzIjoiTWFyYXRob24ifQ.1iZiWav2Ya6-jvQLkzQzoOuGCzjBK56R8pAiqnkF2UU";
 const String callback = "passivemarathon://";
-const String login_url = "https://api.mrthn.dev/login?service=fitbit&token=" + token;
+const String login_url = "https://mrthn.dev/service.html?token=" + token;
 
 // USER/Profile Data
 
@@ -65,4 +68,4 @@ const List<String> choices = <String>[
   leave_group,
 ];
 
-const int add_friend_to_group=0;
+const int add_friend_to_group = 0;

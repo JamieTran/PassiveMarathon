@@ -13,9 +13,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // precache images so that they load faster
     // TODO: change image string to constants
-    precacheImage(new AssetImage("assets/images/background1.jpg"), context);
-    precacheImage(new AssetImage("assets/images/background2.jpg"), context);
-    precacheImage(new AssetImage("assets/images/background3.jpg"), context);
+    precacheImage(new AssetImage("assets/images/background1.png"), context);
+    precacheImage(new AssetImage("assets/images/background2.png"), context);
+    precacheImage(new AssetImage("assets/images/background3.png"), context);
 
     return new MaterialApp(
       title: 'Flutter Demo',

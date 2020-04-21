@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 import 'package:flutter/material.dart';
+import '../profile_pages/profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:passive_marathon/db_management.dart';
 import 'package:passive_marathon/group_pages/add_member.dart';
@@ -308,9 +309,11 @@ Widget _buildListItem(BuildContext context, document, groupDistance, indexVal, g
             )
           ],
         ),
-    onTap: () {
-        // Profile Page redirect here
-    },
+    onTap: () async {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => new ProfilePage(document['reference'])));
+        },
   );
 }
 
@@ -331,6 +334,7 @@ ListTile determineRaceStatus(document, groupDistance, indexVal, BuildContext con
   
 }
 
+
 ListTile _tile(String title, groupDistance, userDistance, IconData icon, indexVal) => ListTile(
       title: Text(title,
           style: TextStyle(
@@ -344,7 +348,7 @@ ListTile _tile(String title, groupDistance, userDistance, IconData icon, indexVa
       ),
       leading: Icon(
         icon,
-        color: Colors.black,
+        color: Constants.placement_colors[indexVal],
         size: 50,
       ),
       trailing: Text(userDistance.toString() + ' Km'),

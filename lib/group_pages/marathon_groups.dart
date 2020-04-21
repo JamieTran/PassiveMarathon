@@ -52,7 +52,7 @@ class MarathonGroups extends State<GroupsScreen> {
                   itemCount: snapshot.data['groups'].length,
                   itemBuilder: (_, int index) {
                     String groupName = snapshot.data['groups'].elementAt(index);
-                      return buildGroupRedirectCard(groupName, _);
+                      return buildGroupRedirectCard(groupName, _, index);
                   }
                 );     
             }

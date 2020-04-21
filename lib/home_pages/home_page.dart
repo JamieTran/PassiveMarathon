@@ -34,8 +34,7 @@ class HomePageState extends State<HomePage>{
           new NavButton(Constants.bright_red, Constants.bright_white, Constants.bright_white, "Marathons", Icons.directions_run, MaterialPageRoute(builder: (context) => GroupsScreen())),
           new NavButton(Constants.bright_blue, Constants.bright_white, Constants.bright_white, "Friends", Icons.group,MaterialPageRoute(builder: (context) => FriendScreen())),
           new NavButton(Constants.bright_purple, Constants.bright_white, Constants.bright_white, "Profile", Icons.account_circle ,MaterialPageRoute(builder: (context) => ProfilePage(Constants.dbManagement.getUserRef()))),
-          new NavButton(Constants.bright_yellow, Constants.bright_white, Constants.bright_white, "Settings", Icons.settings ,MaterialPageRoute(builder: (context) => SettingsPage())),
-          new NavButton(Constants.bright_blue, Constants.bright_white, Constants.bright_white, "Invites", Icons.mail_outline ,MaterialPageRoute(builder: (context) => InviteScreen())),
+          new NavButton(Constants.bright_yellow, Constants.bright_white, Constants.bright_white, "Invites", Icons.mail_outline ,MaterialPageRoute(builder: (context) => InviteScreen())),
         ],
       ),
     );
