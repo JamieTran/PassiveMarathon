@@ -101,7 +101,7 @@ class _ProfilePage extends State<ProfilePage>{
                       borderRadius: BorderRadius.circular(62.5),
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: AssetImage('assets/images/background1.jpg'))),
+                          image: AssetImage('assets/images/background1.png'))),
                 ),
                 SizedBox(height: 25.0),
                 Text(
@@ -194,11 +194,4 @@ class _ProfilePage extends State<ProfilePage>{
     }
   }
 
-}
-
-class Choice {
-  const Choice({this.title, this.icon});
-
-  final String title;
-  final IconData icon;
 }

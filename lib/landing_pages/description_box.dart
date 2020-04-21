@@ -22,12 +22,16 @@ class DescriptionBox extends StatelessWidget {
               padding: EdgeInsets.all(20),
               child: Text(
                 descriptionHeader,
-                style: TextStyle(fontSize: 24, color: Colors.white),
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 24,
+                    color: Colors.white),
               ),
             ),
             Text(
               descriptionBody,
-              style: TextStyle(fontSize: 15, color: Colors.white),
+              style: TextStyle(
+                  fontFamily: 'Montserrat', fontSize: 15, color: Colors.white),
               textAlign: TextAlign.center,
             ),
           ],

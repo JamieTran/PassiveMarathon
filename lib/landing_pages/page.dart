@@ -11,12 +11,10 @@ class Page extends StatelessWidget {
   });
 
   static var backgroundAssets = [
-    "assets/images/background1.jpg",
-    "assets/images/background2.jpg",
-    "assets/images/background3.jpg",
+    "assets/images/background1.png",
+    "assets/images/background2.png",
+    "assets/images/background3.png",
   ];
-
-  
 
   onTap() {
     print("${this.idx} selected.");
@@ -26,23 +24,20 @@ class Page extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Container(
       decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(backgroundAssets[idx]),
-            fit: BoxFit.cover,
+        image: DecorationImage(
+          image: AssetImage(backgroundAssets[idx]),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: new Stack(
+        fit: StackFit.passthrough,
+        children: <Widget>[
+          this.page,
+          new Material(
+            type: MaterialType.transparency,
+            child: new InkWell(onTap: this.onTap),
           ),
-        ),
-      child: BackdropFilter (
-        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-        child: new Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            this.page,
-            new Material(
-              type: MaterialType.transparency,
-              child: new InkWell(onTap: this.onTap),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }

@@ -68,7 +68,7 @@ class _CreateGroupState extends State{
   }
 }
 
-Widget buildGroupRedirectCard(groupName, context) {
+Widget buildGroupRedirectCard(groupName, context, index) {
   return new GestureDetector(
   onTap: ()=> Navigator.push(
     context,
@@ -76,7 +76,7 @@ Widget buildGroupRedirectCard(groupName, context) {
     ),
       child: new Card(
         child: ListTile(
-          leading: Icon(Icons.flag),
+          leading: Icon(Icons.flag, color: Constants.placement_colors[index]),
           title: Text(groupName),
         ),
       ));
