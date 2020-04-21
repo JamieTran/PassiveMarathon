@@ -26,6 +26,7 @@ class _ProfilePage extends State<ProfilePage>{
   var username = 'loading';
   var userID;
   var userDistance = 'loading';
+  var joined;
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class _ProfilePage extends State<ProfilePage>{
         friendCount = datasnapshot.data['friends'].length;
         groupCount = datasnapshot.data['groups'].length;
         userID = datasnapshot.data['userID'];
+        joined = datasnapshot.data['joined'];
 
         
         print(userDistance);
@@ -49,9 +51,9 @@ class _ProfilePage extends State<ProfilePage>{
         print(groupCount);
       }
     setState(()  {
-      MrthnAPI.fetchDistance(userID).then((distance) => {
-          userDistance = distance,
-        });
+      // MrthnAPI.fetchDistance(userID).then((distance) => {
+      //     userDistance = distance,
+      //   });
       });
     });
   }
@@ -63,7 +65,7 @@ class _ProfilePage extends State<ProfilePage>{
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
-      future: MrthnAPI.fetchDistance(userID),
+      future: MrthnAPI.fetchDistance(userID, joined),
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
       if (snapshot.hasData) {
         userDistance = snapshot.data;

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class DatabaseManagement{
 
@@ -7,6 +8,10 @@ class DatabaseManagement{
 
   void createUser(id, String name) async {
     // save the dBCodeNameRef here somewhere?
+
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String date = formatter.format(now);
 
     DocumentReference docRef = await databaseReference.collection("users")
       .add({
@@ -17,6 +22,7 @@ class DatabaseManagement{
         'friends': {},
         'groups': [],
         'invites': [],
+        'joined': date,
       });
 
       setDBCodeNameRef(docRef.documentID);
