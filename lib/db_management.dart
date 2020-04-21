@@ -157,13 +157,14 @@ class DatabaseManagement{
     });
   }
 
-  restartGroup(groupName)
+  restartGroup(groupName,String date)
   {
     // Get Members Info
     DocumentReference groupRef = databaseReference.collection('groups').document(groupName);
 
     groupRef.get().then((datasnapshot) async {
     if (datasnapshot.exists) {
+      
       List<dynamic> memberArray = datasnapshot.data['membersInfo'].toList();
       
         for (Map item in memberArray) // Reset distance in group array
@@ -173,8 +174,8 @@ class DatabaseManagement{
 
           // Update Data
         databaseReference.collection('groups').document(groupName).updateData({"membersInfo": memberArray});
-        
       }
+      databaseReference.collection('groups').document(groupName).updateData({"startDate": date});
     });
   }
 
