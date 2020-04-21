@@ -12,19 +12,21 @@ import './group_options.dart';
 class ResultsScreen extends StatefulWidget {
 
   var groupData;
+  List<String> winnersList;
 
   @override 
-    ResultsPage createState() => ResultsPage(groupData);
+    ResultsPage createState() => ResultsPage(groupData, this.winnersList);
 
-    ResultsScreen(this.groupData);
+    ResultsScreen(this.groupData, this.winnersList);
 }
 
 class ResultsPage extends State<ResultsScreen> {
 
   var groupData;
+  List<String> winnersList;
   bool isAdmin=false;
 
-  ResultsPage(this.groupData);
+  ResultsPage(this.groupData, this.winnersList);
 
 @override
 void initState() {
@@ -127,7 +129,87 @@ updateUI()
         appBar: checkRole(),
         backgroundColor: Constants.bright_white,
         body:
-        null
+        Center(
+        child: ListView(
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 25.0),
+                Text(
+                  "🎉 1st Place " + winnersList[0] + " 🎉",
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 4.0),
+                Padding(
+                padding: EdgeInsets.all(30.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "1st Place",
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 5.0),
+                        Text(
+                          winnersList[0],
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.black),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "2nd Place",
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 5.0),
+                        Text(
+                          winnersList[1],
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.black),
+                        )
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "3rd Place",
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 5.0),
+                        Text(
+                          winnersList[2],
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              color: Colors.black),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              ],
+          ),],
+        ),
+      )
       );
   }
 }
