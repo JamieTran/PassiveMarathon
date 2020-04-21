@@ -45,7 +45,7 @@ checkRaceComplete(context)
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ResultsScreen(groupData))
+      MaterialPageRoute(builder: (context) => ResultsScreen(groupData, winnersList))
       ); 
   }
 }
@@ -298,9 +298,9 @@ ListTile determineRaceStatus(document, groupDistance, indexVal, BuildContext con
   if (userDistance >= groupDistance)  // Race Complete
   {
 
-    if (!winnersList.contains(document['reference']))  // If list doesnt have winner, 
+    if (!winnersList.contains(document['name']))  // If list doesnt have winner, 
     {
-      winnersList.add(document['reference']);          // Add winner
+      winnersList.add(document['name']);          // Add winner
     }
   }
 
