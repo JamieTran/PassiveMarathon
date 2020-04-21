@@ -48,7 +48,7 @@ updateList()
     return Scaffold(
       appBar: AppBar(
         title: Text("Invitations"),
-        backgroundColor: Constants.bright_blue),
+        backgroundColor: Constants.bright_yellow),
         body:
           ListView(
             children: <Widget>[
