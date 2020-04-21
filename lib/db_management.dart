@@ -106,7 +106,7 @@ class DatabaseManagement{
     var name;
   }
 
-  void createGroup(String groupName, groupDistance) async
+  void createGroup(String groupName, groupDistance, String date) async
   {
     DocumentReference doc = databaseReference.collection('users').document(dBCodeNameRef);
     var name;
@@ -122,6 +122,7 @@ class DatabaseManagement{
       'admin':dBCodeNameRef,
       'groupName':groupName,
       'groupDistance':groupDistance,
+      'startDate':date,
       'membersInfo':[{"name":name,"distance":0,"reference":dBCodeNameRef}],
     });
 
