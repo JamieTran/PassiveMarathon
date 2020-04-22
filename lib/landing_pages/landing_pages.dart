@@ -89,7 +89,6 @@ class LandingPagesState extends State<LandingPages> {
     new DescriptionBox(landingHeaders[2], landingBody[2]),
   ];
 
-  // TODO: Change onPressed back to _launchURL
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -106,6 +105,7 @@ class LandingPagesState extends State<LandingPages> {
               },
               preloadPagesCount: 3,
             ),
+            
             new Positioned(
               bottom: 80,
               left: 120,

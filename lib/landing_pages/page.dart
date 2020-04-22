@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import '../constants.dart' as Constants;
 
 class Page extends StatelessWidget {
   final page;
@@ -32,6 +33,32 @@ class Page extends StatelessWidget {
       child: new Stack(
         fit: StackFit.passthrough,
         children: <Widget>[
+           new Center(
+              child: Padding(
+                padding: EdgeInsets.all(60),
+                child: Container(
+                  alignment: Alignment.topCenter,
+                  child: Image.asset('assets/images/donuts.png', width: 220,)
+                ),
+              ),
+            ),
+            
+            new Center(
+              child: Padding(
+                padding: EdgeInsets.all(40),
+                child: Container(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    'Lazy Olympics',
+                    style: TextStyle(
+                          fontFamily: 'MagicDreams',
+                          fontSize: 40,
+                          color: Constants.salmon_darkBlue),
+                  ),
+                ),
+              ),
+            ),
+
           this.page,
           new Material(
             type: MaterialType.transparency,
