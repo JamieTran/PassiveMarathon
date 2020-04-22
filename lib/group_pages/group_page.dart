@@ -73,9 +73,12 @@ checkRaceComplete(context)
 
 updateDistance() async
 {
+  var startDate;
   Map<String,String> userIDs = new Map<String,String>();
   await Constants.dbManagement.getGroupRef(groupData).get().then((datasnapshot) async {
     if (datasnapshot.exists) {
+      startDate = datasnapshot.data['startDate'];
+      print(startDate);
       List<dynamic> members = datasnapshot.data['membersInfo'];
       for (var member in members) {
         await Constants.dbManagement.getIDFromCode(member['reference']).then((user) =>
@@ -85,9 +88,11 @@ updateDistance() async
       }
     }
   });
+  print(startDate);
+
   // get each distance from mrthn
   userIDs.forEach((k,v) => {
-    MrthnAPI.fetchDistance(v).then((distance) => {
+    MrthnAPI.fetchDistance(v,startDate).then((distance) => {
       Constants.dbManagement.updateDistance(k, double.parse(distance), groupData),
       })
   });}

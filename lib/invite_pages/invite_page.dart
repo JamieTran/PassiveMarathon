@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:passive_marathon/db_management.dart';
-import 'package:passive_marathon/friend_pages/friend_add_page.dart';
 import '../constants.dart' as Constants;
 
 // Stateful widgets are used when you need to update the screen
@@ -48,7 +46,7 @@ updateList()
     return Scaffold(
       appBar: AppBar(
         title: Text("Invitations"),
-        backgroundColor: Constants.bright_blue),
+        backgroundColor: Constants.bright_yellow),
         body:
           ListView(
             children: <Widget>[

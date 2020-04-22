@@ -6,11 +6,11 @@ import '../constants.dart' as Constants;
 
 
 class MrthnAPI {
-  static Future<String> fetchDistance(String mrthnID) async {
+  static Future<String> fetchDistance(String mrthnID, String date) async {
     // TODO: make user & date dynamic for what is being requested
     // TODO: also make authentication token private
     final response = await http.get(
-    'https://api.mrthn.dev/user/' + mrthnID + '/distance/over-period?date=2020-02-13&period=30d&largestOnly=false',
+    'https://api.mrthn.dev/user/' + mrthnID + '/distance/over-period?date=' + date + '&period=30d&largestOnly=false',
       headers: {HttpHeaders.authorizationHeader: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxIiwiaXNzIjoiTWFyYXRob24ifQ.1iZiWav2Ya6-jvQLkzQzoOuGCzjBK56R8pAiqnkF2UU"},
     );
     if (response.body.contains("error")) return '0';
