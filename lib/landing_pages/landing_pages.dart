@@ -29,14 +29,14 @@ class LandingPagesState extends State<LandingPages> {
 
   static var landingHeaders = [
     "Marathon",
-    "Something About Friends",
+    "Connect With Friends",
     "Reach Your Goals!",
   ];
 
   static var landingBody = [
-    "Start a race with your friends and complete it at your own time while incorperating fitness and competition. Beat your friends!",
-    "Your friends stand no chance when they compete with Passive Marathon. Get your distance in while destroying the enemy.",
-    "Set and achieve running goals with the help of Passive Marathon! A tool to help improve fitness and create ",
+    "Start a race with your friends and complete it at your own pace while incorperating fitness and competition. Beat your friends!",
+    "Invite your friends, join groups and compete in challenges that keep you moving and grooving towards your goals.",
+    "Set and achieve running goals with the help of Lazy Olympics! A tool to help improve fitness and with a twist!",
   ];
 
   void _launchURL() async {
@@ -50,7 +50,7 @@ class LandingPagesState extends State<LandingPages> {
       case 0:
         break;
       default:
-      Constants.user_id = int.parse(mrthnUserId); // edit this to switch users
+      Constants.user_id = 12;//int.parse(mrthnUserId); // edit this to switch users
       Constants.dbManagement.checkUser(Constants.user_id.toString()).then((QuerySnapshot docs) {
         for (int i=0;i<docs.documents.length;i++){
           userData.add(docs.documents[i].data);
