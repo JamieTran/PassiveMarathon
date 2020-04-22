@@ -34,9 +34,9 @@ class LandingPagesState extends State<LandingPages> {
   ];
 
   static var landingBody = [
-    "Start a race with your friends and complete it at your own pace while incorperating fitness and competition. Beat your friends!",
+    "Start a race with your friends and complete it at your own pace while incorporating fitness and competition. Beat your friends!",
     "Invite your friends, join groups and compete in challenges that keep you moving and grooving towards your goals.",
-    "Set and achieve running goals with the help of Lazy Olympics! A tool to help improve fitness and with a twist!",
+    "Set and achieve running goals with the help of Lazy Olympics! A tool to help improve fitness with a twist!",
   ];
 
   void _launchURL() async {
