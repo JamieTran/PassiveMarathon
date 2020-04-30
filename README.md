@@ -1,4 +1,4 @@
-# Project Title
+# Passive Marathon
 
 Passive Marathon is the development name for Lazy Olympics. It is a Flutter application for users who enjoy competition and fitness. Users are able to compete against friends and family in fitness challenges to determine who will come out on top. Try it out by visiting the Google Play Store and downloading Lazy Olympics!
 
@@ -14,4 +14,7 @@ Product Manager - [AdamTunkiewicz](https://github.com/Tuncarrot)
 
 ## Screenshots
 
-![Image of Yaktocat](https://github.com/JamieTran/PassiveMarathon/blob/master/assets/images/background1.png)
+![Screenshot1](https://github.com/JamieTran/PassiveMarathon/blob/master/assets/screenshots/sc1.png)
+![Screenshot2](https://github.com/JamieTran/PassiveMarathon/blob/master/assets/screenshots/sc2.png)
+![Screenshot3](https://github.com/JamieTran/PassiveMarathon/blob/master/assets/screenshots/sc3.png)
+![Screenshot4](https://github.com/JamieTran/PassiveMarathon/blob/master/assets/screenshots/sc4.png)
