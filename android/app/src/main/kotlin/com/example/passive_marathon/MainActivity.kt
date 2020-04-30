@@ -1,4 +1,4 @@
-package com.example.passive_marathon
+package com.passive_marathon
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
