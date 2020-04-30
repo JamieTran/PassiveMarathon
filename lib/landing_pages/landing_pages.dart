@@ -50,36 +50,34 @@ class LandingPagesState extends State<LandingPages> {
       case 0:
         break;
       default:
-      Constants.user_id = int.parse(mrthnUserId); // edit this to switch users
-      Constants.dbManagement.checkUser(Constants.user_id.toString()).then((QuerySnapshot docs) {
-        for (int i=0;i<docs.documents.length;i++){
-          userData.add(docs.documents[i].data);
-        } 
-        if (userData.length <= 0)
-        {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-          );
-          print("showing alert");
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return NewUserAlert();
-            }
-          );
-        
-        }
-        else
-        {
-          Constants.dbManagement.setDBCodeNameRef(docs.documents[0].documentID);
-          Constants.user_name = userData[0]["name"];
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-          );
-        }
-      });
+        Constants.user_id = int.parse(mrthnUserId); // edit this to switch users
+        Constants.dbManagement
+            .checkUser(Constants.user_id.toString())
+            .then((QuerySnapshot docs) {
+          for (int i = 0; i < docs.documents.length; i++) {
+            userData.add(docs.documents[i].data);
+          }
+          if (userData.length <= 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+            print("showing alert");
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return NewUserAlert();
+                });
+          } else {
+            Constants.dbManagement
+                .setDBCodeNameRef(docs.documents[0].documentID);
+            Constants.user_name = userData[0]["name"];
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          }
+        });
     }
   }
 
@@ -105,7 +103,6 @@ class LandingPagesState extends State<LandingPages> {
               },
               preloadPagesCount: 3,
             ),
-            
             new Positioned(
               bottom: 80,
               left: 120,
