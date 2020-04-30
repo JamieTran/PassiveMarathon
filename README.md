@@ -14,4 +14,4 @@ Product Manager - [AdamTunkiewicz](https://github.com/Tuncarrot)
 
 ## Screenshots
 
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+![Image of Yaktocat](https://github.com/JamieTran/PassiveMarathon/blob/master/assets/images/background1.png)
