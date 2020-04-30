@@ -34,9 +34,9 @@ class LandingPagesState extends State<LandingPages> {
   ];
 
   static var landingBody = [
-    "Start a race with your friends and complete it at your own pace while incorperating fitness and competition. Beat your friends!",
+    "Start a race with your friends and complete it at your own pace while incorporating fitness and competition. Beat your friends!",
     "Invite your friends, join groups and compete in challenges that keep you moving and grooving towards your goals.",
-    "Set and achieve running goals with the help of Lazy Olympics! A tool to help improve fitness and with a twist!",
+    "Set and achieve running goals with the help of Lazy Olympics! A tool to help improve fitness with a twist!",
   ];
 
   void _launchURL() async {
@@ -50,36 +50,34 @@ class LandingPagesState extends State<LandingPages> {
       case 0:
         break;
       default:
-      Constants.user_id = int.parse(mrthnUserId); // edit this to switch users
-      Constants.dbManagement.checkUser(Constants.user_id.toString()).then((QuerySnapshot docs) {
-        for (int i=0;i<docs.documents.length;i++){
-          userData.add(docs.documents[i].data);
-        } 
-        if (userData.length <= 0)
-        {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-          );
-          print("showing alert");
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return NewUserAlert();
-            }
-          );
-        
-        }
-        else
-        {
-          Constants.dbManagement.setDBCodeNameRef(docs.documents[0].documentID);
-          Constants.user_name = userData[0]["name"];
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-          );
-        }
-      });
+        Constants.user_id = int.parse(mrthnUserId); // edit this to switch users
+        Constants.dbManagement
+            .checkUser(Constants.user_id.toString())
+            .then((QuerySnapshot docs) {
+          for (int i = 0; i < docs.documents.length; i++) {
+            userData.add(docs.documents[i].data);
+          }
+          if (userData.length <= 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+            print("showing alert");
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return NewUserAlert();
+                });
+          } else {
+            Constants.dbManagement
+                .setDBCodeNameRef(docs.documents[0].documentID);
+            Constants.user_name = userData[0]["name"];
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          }
+        });
     }
   }
 
@@ -105,7 +103,6 @@ class LandingPagesState extends State<LandingPages> {
               },
               preloadPagesCount: 3,
             ),
-            
             new Positioned(
               bottom: 80,
               left: 120,
